@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="Huangjianke&#39;s Blog">
 <meta property="og:description" content="最近需要迁移Git仓库，有如下需求   保留原有仓库的分支 保留原有仓库的提交记录  通过查找资料，最后发现一种最优Git仓库迁移方案。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-21T16:32:59.274Z">
+<meta property="og:updated_time" content="2018-07-24T07:09:53.526Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git仓库迁移保留提交记录">
 <meta name="twitter:description" content="最近需要迁移Git仓库，有如下需求   保留原有仓库的分支 保留原有仓库的提交记录  通过查找资料，最后发现一种最优Git仓库迁移方案。">
@@ -344,12 +344,24 @@
                 
               
 
-              <time title="创建时间：2018-07-22 00:01:31 / 修改时间：00:32:59" itemprop="dateCreated datePublished" datetime="2018-07-22T00:01:31+08:00">2018-07-22</time>
+              <time title="创建时间：2018-07-22 00:01:31" itemprop="dateCreated datePublished" datetime="2018-07-22T00:01:31+08:00">2018-07-22</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-24 15:09:53" itemprop="dateModified" datetime="2018-07-24T15:09:53+08:00">2018-07-24</time>
               
             
           </span>
@@ -410,21 +422,19 @@
 <p>通过查找资料，最后发现一种最优Git仓库迁移方案。</p>
 <a id="more"></a>
 <ol>
-<li>先 <code>clone</code> 原有仓库的镜像</li>
+<li><p>先 <code>clone</code> 原有仓库的镜像</p>
+<p> <code>git clone --mirror old.git</code>  (<code>old.git</code>为原有仓库Git地址)</p>
+</li>
+<li><p>进入原有仓库目录</p>
+<p> <code>cd old.git</code></p>
+</li>
+<li><p>修改原有仓库地址为新仓库地址</p>
+<p> <code>git remote set-url --push origin new.git</code>(<code>new.git</code> 为新项目的Git地址)</p>
+</li>
+<li><p>推送镜像到远程</p>
+<p> <code>git push --mirror</code> 需要输入新仓库的账号密码</p>
+</li>
 </ol>
-<p><code>git clone --mirror old.git</code>  (<code>old.git</code>为原有仓库Git地址)</p>
-<ol start="2">
-<li>进入原有仓库目录</li>
-</ol>
-<p><code>cd old.git</code></p>
-<ol start="3">
-<li>修改原有仓库地址为新仓库地址</li>
-</ol>
-<p><code>git remote set-url --push origin new.git</code>(new.git 为新项目的Git地址)</p>
-<ol start="4">
-<li>推送镜像到远程</li>
-</ol>
-<p><code>git push --mirror</code> 需要输入新仓库的账号密码</p>
 <blockquote>
 <p>Git是目前世界上最先进的分布式版本控制系统（没有之一）</p>
 </blockquote>
