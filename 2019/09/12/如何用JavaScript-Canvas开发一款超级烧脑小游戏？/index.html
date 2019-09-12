@@ -127,7 +127,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/19/16ca99ee27b06341?w=300&h=288&f=png&s=34253">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/20/16cad11323cccf61?w=620&h=460&f=png&s=16321">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/19/16ca8b653f22285f?w=258&h=258&f=jpeg&s=42561">
-<meta property="og:updated_time" content="2019-09-12T07:59:19.927Z">
+<meta property="og:updated_time" content="2019-09-12T08:03:14.650Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何用JavaScript+Canvas开发一款超级烧脑小游戏？">
 <meta name="twitter:description" content="启逻辑之高妙，因想象而自由  层叠拼图Plus是一款需要空间想象力和逻辑推理能力完美结合的微信小游戏，偶消奇不消，在简单的游戏规则下却有着无数种可能性，需要你充分发挥想象力去探索，看似简单却具有极大的挑战性和趣味性，这就是其魅力所在！">
@@ -356,7 +356,7 @@
                 
               
 
-              <time title="创建时间：2019-09-12 15:45:44 / 修改时间：15:59:19" itemprop="dateCreated datePublished" datetime="2019-09-12T15:45:44+08:00">2019-09-12</time>
+              <time title="创建时间：2019-09-12 15:45:44 / 修改时间：16:03:14" itemprop="dateCreated datePublished" datetime="2019-09-12T15:45:44+08:00">2019-09-12</time>
             
 
             
@@ -418,7 +418,7 @@
 <p><strong>层叠拼图Plus</strong>是一款需要空间想象力和逻辑推理能力完美结合的微信小游戏，偶消奇不消，在简单的游戏规则下却有着无数种可能性，需要你充分发挥想象力去探索，看似简单却具有极大的挑战性和趣味性，这就是其魅力所在！</p>
 <a id="more"></a>
 <p>游戏界面预览：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/9/6/16d0494a8829d90c?w=500&amp;h=541&amp;f=png&amp;s=94442" alt="image"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/6/16d0494a8829d90c?w=500&amp;h=541&amp;f=png&amp;s=94442" alt="preview"></p>
 <blockquote>
 <p>Talk is cheap. Show me the code</p>
 </blockquote>
@@ -449,12 +449,12 @@
 <p>使用：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> points = [</span><br><span class="line">    [&#123; <span class="attr">x</span>: <span class="number">4</span>, <span class="attr">y</span>: <span class="number">5</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">8</span>, <span class="attr">y</span>: <span class="number">9</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">4</span>, <span class="attr">y</span>: <span class="number">9</span> &#125;],</span><br><span class="line">    [&#123; <span class="attr">x</span>: <span class="number">10</span>, <span class="attr">y</span>: <span class="number">8</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">10</span>, <span class="attr">y</span>: <span class="number">12</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">6</span>, <span class="attr">y</span>: <span class="number">12</span> &#125;],</span><br><span class="line">    [&#123; <span class="attr">x</span>: <span class="number">7</span>, <span class="attr">y</span>: <span class="number">4</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">11</span>, <span class="attr">y</span>: <span class="number">4</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">11</span>, <span class="attr">y</span>: <span class="number">8</span> &#125;]</span><br><span class="line">]</span><br><span class="line">points.map(<span class="function">(<span class="params">sub_points</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> block = <span class="keyword">new</span> Block()</span><br><span class="line">    block.init(sub_points, <span class="keyword">this</span>.itemWidth, <span class="keyword">this</span>.ctx)</span><br><span class="line">    block.draw()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>效果如下图：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/26/16ccb963282cbf04?w=300&amp;h=301&amp;f=png&amp;s=53047" alt="image1"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/26/16ccb963282cbf04?w=300&amp;h=301&amp;f=png&amp;s=53047" alt="block"></p>
 <p><code>CanvasRenderingContext2D</code>其他使用方法可参考：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D" target="_blank" rel="noopener">CanvasRenderingContext2D API 列表</a></p>
 <h2 id="1-1-0，「偶消奇不消」的效果如何实现？"><a href="#1-1-0，「偶消奇不消」的效果如何实现？" class="headerlink" title="1 + 1 = 0，「偶消奇不消」的效果如何实现？"></a>1 + 1 = 0，「偶消奇不消」的效果如何实现？</h2><blockquote>
 <p>1 + 1 = 0，是<strong>层叠拼图Plus</strong>小游戏玩法的精髓所在。</p>
 </blockquote>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca96beb9a40d9f?w=300&amp;h=306&amp;f=png&amp;s=36811" alt="image2"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca96beb9a40d9f?w=300&amp;h=306&amp;f=png&amp;s=36811" alt="xor"></p>
 <p>有经验的同学，也许一眼就发现了，<code>1 + 1 = 0</code> 刚好符合通过 <code>异或运算</code> 得出的结果。当然，细心的同学也可能已经发现，在 <code>如何绘制任意多边形图形</code> 这一章节内，有一句特殊的代码：<code>this.ctx.globalCompositeOperation = &#39;xor&#39;</code>，也正是通过设置 <code>CanvasContext</code> 的 <code>globalCompositeOperation</code> 属性值为 <code>xor</code> 便实现了「偶消奇不消」的神奇效果。</p>
 <p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca94dcda5b68f8?w=1526&amp;h=522&amp;f=png&amp;s=115558" alt="globalCompositeOperation"></p>
 <p><code>globalCompositeOperation</code> 是指 <code>在绘制新形状时应用的合成操作的类型</code>，其他效果可参考：<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation" target="_blank" rel="noopener">globalCompositeOperation 示例</a></p>
@@ -471,21 +471,21 @@
 <li>…</li>
 </ul>
 <p>在<strong>层叠拼图Plus</strong>小游戏内，采用的是 <code>回转数</code> 法来判断玩家触摸点是否在多边形内部。<code>回转数</code> 是拓扑学中的一个基本概念，具有很重要的性质和用途。当然，展开讨论 <code>回转数</code> 的概念并不在该文的讨论范围内，我们仅需了解一个概念：<strong>当回转数为 0 时，点在闭合曲线外部。</strong></p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca95f23b785c58?w=300&amp;h=244&amp;f=gif&amp;s=252242" alt="image3"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca95f23b785c58?w=300&amp;h=244&amp;f=gif&amp;s=252242" alt="round"></p>
 <p>上面面这张图动态演示了回转数的概念：图中红色曲线关于点（人所在位置）的回转数为 <code>2</code>。</p>
 <p>对于给定的点和多边形，回转数应该怎么计算呢？</p>
 <ul>
 <li>用线段分别连接点和多边形的全部顶点</li>
 </ul>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca96251c22a09b?w=500&amp;h=360&amp;f=png&amp;s=27778" alt="image4"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca96251c22a09b?w=500&amp;h=360&amp;f=png&amp;s=27778" alt="all"></p>
 <ul>
 <li>计算所有点与相邻顶点连线的夹角</li>
 </ul>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca9627a8a9c710?w=500&amp;h=360&amp;f=png&amp;s=33046" alt="image5"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca9627a8a9c710?w=500&amp;h=360&amp;f=png&amp;s=33046" alt="line"></p>
 <ul>
 <li>计算所有夹角和。注意每个夹角都是有方向的，所以有可能是负值</li>
 </ul>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca962d5d1f2d07?w=500&amp;h=360&amp;f=png&amp;s=35608" alt="image6"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca962d5d1f2d07?w=500&amp;h=360&amp;f=png&amp;s=35608" alt="sub"></p>
 <p>最后根据角度累加值计算回转数。360°（2π）相当于一次回转。</p>
 <p>在使用 <code>JavaScript</code> 实现时，需要注意以下问题：</p>
 <ul>
@@ -502,7 +502,7 @@
 <ul>
 <li>目标图形</li>
 </ul>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca99ee27b06341?w=300&amp;h=288&amp;f=png&amp;s=34253" alt="image7"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca99ee27b06341?w=300&amp;h=288&amp;f=png&amp;s=34253" alt="target"></p>
 <p>多边形平面坐标点集合：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">points = [</span><br><span class="line">    [&#123; <span class="attr">x</span>: <span class="number">6</span>, <span class="attr">y</span>: <span class="number">6</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">10</span>, <span class="attr">y</span>: <span class="number">6</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">10</span>, <span class="attr">y</span>: <span class="number">10</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">6</span>, <span class="attr">y</span>: <span class="number">10</span> &#125;],</span><br><span class="line">    [&#123; <span class="attr">x</span>: <span class="number">8</span>, <span class="attr">y</span>: <span class="number">6</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">10</span>, <span class="attr">y</span>: <span class="number">8</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">8</span>, <span class="attr">y</span>: <span class="number">10</span> &#125;, &#123; <span class="attr">x</span>: <span class="number">6</span>, <span class="attr">y</span>: <span class="number">8</span> &#125;]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取 多个多边形 xor 结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> polygonClipping = <span class="built_in">require</span>(<span class="string">'polygon-clipping'</span>)</span><br><span class="line"></span><br><span class="line">polygonXor(points) &#123;</span><br><span class="line">    <span class="keyword">let</span> poly = []</span><br><span class="line">    points.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">sub_points</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> temp = []</span><br><span class="line">        sub_points.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">point</span>) </span>&#123;</span><br><span class="line">            temp.push([point.x, point.y])</span><br><span class="line">        &#125;)</span><br><span class="line">        poly.push([temp])</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> results = polygonClipping.xor(...poly)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找出左上角的点</span></span><br><span class="line">    <span class="keyword">let</span> min_x = <span class="number">100</span>, min_y = <span class="number">100</span></span><br><span class="line">    results.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">sub_results</span>) </span>&#123;</span><br><span class="line">        sub_results.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">temps</span>) </span>&#123;</span><br><span class="line">            temps.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">point</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (point[<span class="number">0</span>] &lt; min_x) min_x = point[<span class="number">0</span>]</span><br><span class="line">                <span class="keyword">if</span> (point[<span class="number">1</span>] &lt; min_y) min_y = point[<span class="number">1</span>]</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 以左上角为参考点 多边形平移至 原点 &#123;x: 0, y: 0&#125;</span></span><br><span class="line">    results.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">sub_results</span>) </span>&#123;</span><br><span class="line">        sub_results.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">temps</span>) </span>&#123;</span><br><span class="line">            temps.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">point</span>) </span>&#123;</span><br><span class="line">                point[<span class="number">0</span>] -= min_x</span><br><span class="line">                point[<span class="number">1</span>] -= min_y</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -528,7 +528,7 @@
 </li>
 </ul>
 <p>如果想要展示通过关系链 <code>API</code> 获取到的用户数据，如绘制排行榜等业务场景，需要将排行榜绘制到 <code>sharedCanvas</code> 上，再在主域将 <code>sharedCanvas</code> 渲染上屏。</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/20/16cad11323cccf61?w=620&amp;h=460&amp;f=png&amp;s=16321" alt="image8"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/20/16cad11323cccf61?w=620&amp;h=460&amp;f=png&amp;s=16321" alt="rank"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/myOpenDataContext/index.js</span></span><br><span class="line"><span class="keyword">let</span> sharedCanvas = wx.getSharedCanvas()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawRankList</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">  data.forEach(<span class="function">(<span class="params">item, index</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">wx.getFriendCloudStorage(&#123;</span><br><span class="line">  success: <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> data = res.data</span><br><span class="line">    drawRankList(data)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p><code>sharedCanvas</code> 是主域和开放数据域都可以访问的一个离屏画布。在开放数据域调用 <code>wx.getSharedCanvas()</code> 将返回 <code>sharedCanvas</code>。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/myOpenDataContext/index.js</span></span><br><span class="line"><span class="keyword">let</span> sharedCanvas = wx.getSharedCanvas()</span><br><span class="line"><span class="keyword">let</span> context = sharedCanvas.getContext(<span class="string">'2d'</span>)</span><br><span class="line">context.fillStyle = <span class="string">'red'</span></span><br><span class="line">context.fillRect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
@@ -555,7 +555,7 @@
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>短短的一篇文章，定不能将<strong>层叠拼图Plus</strong>小游戏的前前后后讲明白讲透彻，加上文笔有限，有描述不当的地方还望多多海涵。其实最让人心累的还是软著的申请过程，由于各种原因前前后后花了将近三个月的时间，本来也想写一下软著申请相关的内容，最后发现篇幅有点长，无奈作罢，争取后面花点时间整理一下我这边的经验，希望可以帮助到需要的童鞋。</p>
 <p>由于项目结构以及代码还比较混乱，个人觉得，目前暂时还不适合开源。<strong><em>好在，小游戏内的所有核心代码以及游戏实现思想均已呈上</em></strong>，有兴趣的同学如果有相关方面的疑问也可以与我多多交流，大家互相学习，共同进步。</p>
 <p>体验游戏：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca8b653f22285f?w=258&amp;h=258&amp;f=jpeg&amp;s=42561" alt="image9"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/19/16ca8b653f22285f?w=258&amp;h=258&amp;f=jpeg&amp;s=42561" alt="code"></p>
 <p>江湖不远，我们游戏里见！</p>
 
       
