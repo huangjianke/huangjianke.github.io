@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="0. 前言嗯，可能一进来大部分人都会觉得，为什么还会有人重复造轮子，GitHub第三方客户端都已经烂大街啦。确实，一开始我自己也是这么觉得的，也问过自己是否真的有意义再去做这样一个项目。思考再三，以下原因也决定了我愿意去做一个让自己满意的GitHub第三方客户端。  对于时常关注GitHub Trending列表的笔者来说，迫切需要一个更简单的方式随时随地去跟随GitHub最新的技术潮流；">
+<meta name="keywords" content="Git,微信小程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gitter - 高颜值GitHub小程序客户端诞生记">
+<meta property="og:url" content="http://blog.huangjianke.com/posts/gitter/index.html">
+<meta property="og:site_name" content="Huangjianke&#39;s Blog">
+<meta property="og:description" content="0. 前言嗯，可能一进来大部分人都会觉得，为什么还会有人重复造轮子，GitHub第三方客户端都已经烂大街啦。确实，一开始我自己也是这么觉得的，也问过自己是否真的有意义再去做这样一个项目。思考再三，以下原因也决定了我愿意去做一个让自己满意的GitHub第三方客户端。  对于时常关注GitHub Trending列表的笔者来说，迫切需要一个更简单的方式随时随地去跟随GitHub最新的技术潮流；">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/1/26/1688aa356ae167c9?w=258&h=258&f=png&s=34736">
+<meta property="og:updated_time" content="2019-09-12T08:28:13.760Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gitter - 高颜值GitHub小程序客户端诞生记">
+<meta name="twitter:description" content="0. 前言嗯，可能一进来大部分人都会觉得，为什么还会有人重复造轮子，GitHub第三方客户端都已经烂大街啦。确实，一开始我自己也是这么觉得的，也问过自己是否真的有意义再去做这样一个项目。思考再三，以下原因也决定了我愿意去做一个让自己满意的GitHub第三方客户端。  对于时常关注GitHub Trending列表的笔者来说，迫切需要一个更简单的方式随时随地去跟随GitHub最新的技术潮流；">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/1/26/1688aa356ae167c9?w=258&h=258&f=png&s=34736">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.huangjianke.com/posts/gitter/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Gitter - 高颜值GitHub小程序客户端诞生记 | Huangjianke's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/huangjianke" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Huangjianke's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">不忘初心，方得始终</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.huangjianke.com/posts/gitter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="huangjianke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Huangjianke's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gitter - 高颜值GitHub小程序客户端诞生记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-25 15:52:09" itemprop="dateCreated datePublished" datetime="2019-01-25T15:52:09+08:00">2019-01-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-12 16:28:13" itemprop="dateModified" datetime="2019-09-12T16:28:13+08:00">2019-09-12</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <meta name="referrer" content="no-referrer">
+
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>嗯，可能一进来大部分人都会觉得，为什么还会有人重复造轮子，GitHub第三方客户端都已经烂大街啦。确实，一开始我自己也是这么觉得的，也问过自己是否真的有意义再去做这样一个项目。思考再三，以下原因也决定了我愿意去做一个让自己满意的GitHub第三方客户端。</p>
+<ul>
+<li><p>对于时常关注GitHub Trending列表的笔者来说，迫切需要一个更简单的方式随时随地去跟随GitHub最新的技术潮流；</p>
+</li>
+<li><p>已有的一些GitHub小程序客户端颜值与功能并不能满足笔者的要求；</p>
+</li>
+<li><p>听说iOS开发没人要了，掌握一门新的开发技能，又何尝不可？</p>
+</li>
+<li><p>其实也没那么多原因，既然想做，那就去做，开心最重要。</p>
+</li>
+</ul>
+<a id="more"></a>
+<h1 id="1-Gitter"><a href="#1-Gitter" class="headerlink" title="1. Gitter"></a>1. Gitter</h1><p><img src="https://user-gold-cdn.xitu.io/2019/1/26/1688aa356ae167c9?w=258&amp;h=258&amp;f=png&amp;s=34736" alt="code"></p>
+<ul>
+<li><p>GitHub：<a href="https://github.com/huangjianke/Gitter" target="_blank" rel="noopener">https://github.com/huangjianke/Gitter</a>，可能是目前颜值最高的GitHub小程序客户端，欢迎star</p>
+</li>
+<li><p>数据来源：<a href="https://developer.github.com/v3/" target="_blank" rel="noopener">GitHub API v3</a></p>
+</li>
+</ul>
+<p>目前实现的功能有：</p>
+<ul>
+<li><p>实时查看Trending</p>
+</li>
+<li><p>显示用户列表</p>
+</li>
+<li><p>仓库和用户的搜索</p>
+</li>
+<li><p>仓库：详情展示、README.md展示、Star/Unstar、Fork、Contributors展示、查看仓库文件内容</p>
+</li>
+<li><p>开发者：Follow/Unfollow、显示用户的followers/following</p>
+</li>
+<li><p>Issue：查看issue列表、新增issue、新增issue评论</p>
+</li>
+<li><p>分享仓库、开发者</p>
+</li>
+<li><p>…</p>
+</li>
+</ul>
+<p>Gitter的初衷并不是想把网页端所有功能照搬到小程序上，因为那样的体验并不会很友好，比如说，笔者自己也不想在手机上阅读代码，那将会是一件很痛苦的事。</p>
+<p>在保证用户体验的前提下，让用户用更简单的方式得到自己想要的，这是一件有趣的事。</p>
+<h1 id="2-探索篇"><a href="#2-探索篇" class="headerlink" title="2. 探索篇"></a>2. 探索篇</h1><h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>第一次觉得，在茫茫前端的世界里，自己是那么渺小。</p>
+<p>当决定去做这个项目的时候，就开始了马不停蹄的技术选型，但摆在自己面前的选择是那么的多，也不得不感慨，前端的世界，真的很精彩。</p>
+<ul>
+<li><p>原生开发：基本上一开始就放弃了，开发体验很不友好；</p>
+</li>
+<li><p><a href="https://tencent.github.io/wepy/" target="_blank" rel="noopener">WePY</a>：之前用这个框架已经开发过一个小程序，<a href="https://github.com/huangjianke/weapp-poem" target="_blank" rel="noopener">诗词墨客</a>，不得不说，坑是真多，用过的都知道；</p>
+</li>
+<li><p><a href="http://mpvue.com/" target="_blank" rel="noopener">mpvue</a>：用Vue的方式去开发小程序，个人觉得文档并不是很齐全，加上近期维护比较少，可能是趋于稳定了？</p>
+</li>
+<li><p><a href="https://taro.aotu.io/" target="_blank" rel="noopener">Taro</a>：用React的方式去开发小程序，Taro团队的小伙伴维护真的很勤快，也很耐心的解答大家疑问，文档也比较齐全，开发体验也很棒，还可以一键生成多端运行的代码(暂没尝试)</p>
+</li>
+</ul>
+<p>货比三家，经过一段时间的尝试及踩坑，综合自己目前的能力，最终确定了Gitter的技术选型：</p>
+<p><a href="https://taro.aotu.io/" target="_blank" rel="noopener">Taro</a> + <a href="https://taro-ui.aotu.io/#/docs/introduction" target="_blank" rel="noopener">Taro UI</a> + Redux + 云开发 Node.js</p>
+<h2 id="页面设计"><a href="#页面设计" class="headerlink" title="页面设计"></a>页面设计</h2><p>其实，作为一名Coder，曾经一直想找个UI设计师妹子做老婆的(肯定有和我一样想法的Coder)，多搭配啊。现在想想，code不是生活的全部，现在的我一样很幸福。</p>
+<p>话回正题，没有设计师老婆页面设计怎么办？毕竟笔者想要的是一款高颜值的GitHub小程序。</p>
+<p>嗯，不慌，默默的拿出了笔者沉寂已久的Photoshop和Sketch。不敢说自己的设计能力如何，Gitter的设计至少是能让笔者自己心情愉悦的，倘若哪位设计爱好者想对Gitter的设计进行改良，欢迎欢迎，十二分的欢迎！</p>
+<h1 id="3-开发篇"><a href="#3-开发篇" class="headerlink" title="3. 开发篇"></a>3. 开发篇</h1><blockquote>
+<p>Talk is cheap. Show me the code.</p>
+</blockquote>
+<p>作为一篇技术性文章，怎可能少得了代码。</p>
+<p>在这里主要写写几个踩坑点，作为一个前端小白，相信各位读者均是笔者的前辈，还望多多指教！</p>
+<h2 id="Trending"><a href="#Trending" class="headerlink" title="Trending"></a>Trending</h2><p>进入开发阶段没多久，就遇到了第一个坑。<strong>GitHub居然没有提供Trending列表的API！！！</strong></p>
+<p>也没有过多的去想GitHub为什么不提供这个API，只想着怎么去尽快填好这个坑。一开始尝试使用<a href="https://scrapy.org/" target="_blank" rel="noopener">Scrapy</a>写一个爬虫对网页端的Trending列表信息进行定时爬取及存储供小程序端使用，但最终还是放弃了这个做法，因为笔者并没有服务器与已经备案好的域名，小程序的云开发也只支持Node.js的部署。</p>
+<p>开源的力量还是强大，最终找到了<a href="https://github.com/huchenme/github-trending-api" target="_blank" rel="noopener">github-trending-api</a>，稍作修改，成功部署到小程序云开发后台，在此，感谢原作者的努力。</p>
+<ul>
+<li>Trending列表云函数</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 云函数入口函数</span></span><br><span class="line">exports.main = <span class="keyword">async</span> (event, context) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; type, language, since &#125; = event</span><br><span class="line">  <span class="keyword">let</span> res = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">let</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">const</span> cacheKey = <span class="string">`repositories::<span class="subst">$&#123;language || <span class="string">'nolang'</span>&#125;</span>::<span class="subst">$&#123;since ||</span></span></span><br><span class="line"><span class="string"><span class="subst">  <span class="string">'daily'</span>&#125;</span>`</span>;</span><br><span class="line">  <span class="keyword">const</span> cacheData = <span class="keyword">await</span> db.collection(<span class="string">'repositories'</span>).where(&#123;</span><br><span class="line">    cacheKey: cacheKey</span><br><span class="line">  &#125;).orderBy(<span class="string">'cacheDate'</span>, <span class="string">'desc'</span>).get()</span><br><span class="line">  <span class="keyword">if</span> (cacheData.data.length !== <span class="number">0</span> &amp;&amp;</span><br><span class="line">    ((date.getTime() - cacheData.data[<span class="number">0</span>].cacheDate)  &lt; <span class="number">1800</span> * <span class="number">1000</span>)) &#123;</span><br><span class="line">    res = <span class="built_in">JSON</span>.parse(cacheData.data[<span class="number">0</span>].content)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    res = <span class="keyword">await</span> fetchRepositories(&#123; language, since &#125;);</span><br><span class="line">    <span class="keyword">await</span> db.collection(<span class="string">'repositories'</span>).add(&#123;</span><br><span class="line">      data: &#123;</span><br><span class="line">        cacheDate: date.getTime(),</span><br><span class="line">        cacheKey: cacheKey,</span><br><span class="line">        content: <span class="built_in">JSON</span>.stringify(res)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    data: res</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Markdown解析"><a href="#Markdown解析" class="headerlink" title="Markdown解析"></a>Markdown解析</h2><p>嗯，这是一个大坑。</p>
+<p>在做技术调研的时候，发现小程序端Markdown解析主要有以下方案：</p>
+<ul>
+<li><p><a href="https://github.com/icindy/wxParse" target="_blank" rel="noopener">wxParse</a>：作者最后一次提交已是两年前了，经过自己的尝试，也确实发现已经不适合如README.md的解析</p>
+</li>
+<li><p><a href="https://github.com/TooBug/wemark" target="_blank" rel="noopener">wemark</a>：一款很优秀的微信小程序Markdown渲染库，但经过笔者尝试之后，发现对README.md的解析并不完美</p>
+</li>
+<li><p><a href="https://github.com/sbfkcel/towxml" target="_blank" rel="noopener">towxml</a>：目前发现是微信小程序最完美的Markdown渲染库，已经能近乎完美的对README.md进行解析并展示</p>
+</li>
+</ul>
+<p>在Markdown解析这一块，最终采用的也是towxml，但发现在解析性能这一块，目前并不是很优秀，对一些比较大的数据解析也超出了小程序所能承受的范围，还好贴心的作者(<a href="https://github.com/sbfkcel" target="_blank" rel="noopener">sbfkcel</a>)提供了服务端的支持，在此感谢作者的努力！</p>
+<ul>
+<li>Markdown解析云函数</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Towxml = <span class="built_in">require</span>(<span class="string">'towxml'</span>);</span><br><span class="line"><span class="keyword">const</span> towxml = <span class="keyword">new</span> Towxml();</span><br><span class="line"><span class="comment">// 云函数入口函数</span></span><br><span class="line">exports.main = <span class="keyword">async</span> (event, context) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; func, type, content &#125; = event</span><br><span class="line">  <span class="keyword">let</span> res</span><br><span class="line">  <span class="keyword">if</span> (func === <span class="string">'parse'</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">'markdown'</span>) &#123;</span><br><span class="line">      res = <span class="keyword">await</span> towxml.toJson(content || <span class="string">''</span>, <span class="string">'markdown'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      res = <span class="keyword">await</span> towxml.toJson(content || <span class="string">''</span>, <span class="string">'html'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    data: res</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>markdown.js组件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 云函数解析markdown</span></span><br><span class="line">parseReadme() &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; md, base &#125; = <span class="keyword">this</span>.props</span><br><span class="line">  <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">  wx.cloud.callFunction(&#123;</span><br><span class="line">    <span class="comment">// 要调用的云函数名称</span></span><br><span class="line">    name: <span class="string">'parse'</span>,</span><br><span class="line">    <span class="comment">// 传递给云函数的event参数</span></span><br><span class="line">    data: &#123;</span><br><span class="line">      func: <span class="string">'parse'</span>,</span><br><span class="line">      type: <span class="string">'markdown'</span>,</span><br><span class="line">      content: md,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> data = res.result.data</span><br><span class="line">    <span class="keyword">if</span> (base &amp;&amp; base.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      data = render.initData(data, &#123;<span class="attr">base</span>: base, <span class="attr">app</span>: <span class="keyword">this</span>.$scope&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    that.setState(&#123;</span><br><span class="line">      fail: <span class="literal">false</span>,</span><br><span class="line">      data: data</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'cloud'</span>, err)</span><br><span class="line">    that.setState(&#123;</span><br><span class="line">      fail: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Markdown渲染</span></span><br><span class="line">render() &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; data &#125; = <span class="keyword">this</span>.state</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;View&gt;</span><br><span class="line">    &#123;</span><br><span class="line">      data ? (</span><br><span class="line">        &lt;View&gt;</span><br><span class="line">          &lt;<span class="keyword">import</span> src=<span class="string">'../towxml/entry.wxml'</span> /&gt;</span><br><span class="line">          &lt;template is=<span class="string">'entry'</span> data=<span class="string">'&#123;&#123;...data&#125;&#125;'</span> /&gt;</span><br><span class="line">        &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">      ) : (</span></span><br><span class="line"><span class="regexp">        &lt;View className='loading'&gt;</span></span><br><span class="line"><span class="regexp">          &lt;AtActivityIndicator size=&#123;20&#125; color='#2d8cf0' content='loading...' /</span>&gt;</span><br><span class="line">        &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">      )</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>View&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><p>其实，笔者在该项目中，对Redux的使用并不多。一开始，笔者觉得所有的接口请求都应该通过Redux操作，后面才发现，并不是所有的操作都必须使用Redux，最后，在本项目中，只有获取个人信息的时候使用了Redux。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取个人信息</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getUserInfo = createApiAction(USERINFO, (params) =&gt; api.get(<span class="string">'/user'</span>, params))</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// action</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createApiAction</span>(<span class="params">actionType, func = (</span>) =&gt; </span>&#123;&#125;) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    params = &#123;&#125;,</span><br><span class="line">    callback = &#123; <span class="attr">success</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;, <span class="attr">failed</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125; &#125;,</span><br><span class="line">    customActionType = actionType,</span><br><span class="line">  ) =&gt; <span class="keyword">async</span> (dispatch) =&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      dispatch(&#123; <span class="attr">type</span>: <span class="string">`<span class="subst">$&#123;customActionType  &#125;</span>_request`</span>, params &#125;);</span><br><span class="line">      <span class="keyword">const</span> data = <span class="keyword">await</span> func(params);</span><br><span class="line">      dispatch(&#123; <span class="attr">type</span>: customActionType, params, <span class="attr">payload</span>: data &#125;);</span><br><span class="line"></span><br><span class="line">      callback.success &amp;&amp; callback.success(&#123; <span class="attr">payload</span>: data &#125;)</span><br><span class="line">      <span class="keyword">return</span> data</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      dispatch(&#123; <span class="attr">type</span>: <span class="string">`<span class="subst">$&#123;customActionType  &#125;</span>_failure`</span>, params, <span class="attr">payload</span>: e &#125;)</span><br><span class="line"></span><br><span class="line">      callback.failed &amp;&amp; callback.failed(&#123; <span class="attr">payload</span>: e &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">getUserInfo() &#123;</span><br><span class="line">  <span class="keyword">if</span> (hasLogin()) &#123;</span><br><span class="line">    userAction.getUserInfo().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">      Taro.hideLoading()</span><br><span class="line">      Taro.stopPullDownRefresh()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    Taro.hideLoading()</span><br><span class="line">    Taro.stopPullDownRefresh()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> mapStateToProps = <span class="function">(<span class="params">state, ownProps</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    userInfo: state.user.userInfo</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> connect(mapStateToProps)(Index)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducers</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">user</span> (<span class="params">state = INITIAL_STATE, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> USERINFO:</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        ...state,</span><br><span class="line">        userInfo: action.payload.data</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>目前，笔者对Redux还是处于一知半解的状态，嗯，学习的路还很长。</p>
+<blockquote>
+<p>有需要的同学可以前往开源仓库查看相应的完整源码，还请多多指教。</p>
+</blockquote>
+<h1 id="4-结语篇"><a href="#4-结语篇" class="headerlink" title="4. 结语篇"></a>4. 结语篇</h1><p>当Gitter第一个版本通过审核的时候，心情是很激动的，就像自己的孩子一样，看着他一点一点的长大，笔者也很享受这样一个项目从无到有的过程，在此，对那些帮助过笔者的人一并表示感谢。</p>
+<p>当然，目前功能和体验上可能有些不大完善，也希望大家能提供一些宝贵的意见，Gitter走向完美的路上希望有你！</p>
+<p>最后，希望Gitter小程序能对你有所帮助！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/微信小程序/" rel="tag"># 微信小程序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/ios_custom_object_copy_archive/" rel="next" title="iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码">
+                <i class="fa fa-chevron-left"></i> iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/stack_melt/" rel="prev" title="如何用JavaScript+Canvas开发一款超级烧脑小游戏？">
+                如何用JavaScript+Canvas开发一款超级烧脑小游戏？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="huangjianke" />
+            
+              <p class="site-author-name" itemprop="name">huangjianke</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/huangjianke" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Gitter"><span class="nav-number"></span> <span class="nav-text">1. Gitter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-探索篇"><span class="nav-number"></span> <span class="nav-text">2. 探索篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技术选型"><span class="nav-number">1.</span> <span class="nav-text">技术选型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面设计"><span class="nav-number">2.</span> <span class="nav-text">页面设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-开发篇"><span class="nav-number"></span> <span class="nav-text">3. 开发篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Trending"><span class="nav-number">1.</span> <span class="nav-text">Trending</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown解析"><span class="nav-number">2.</span> <span class="nav-text">Markdown解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redux"><span class="nav-number">3.</span> <span class="nav-text">Redux</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-结语篇"><span class="nav-number"></span> <span class="nav-text">4. 结语篇</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">huangjianke</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

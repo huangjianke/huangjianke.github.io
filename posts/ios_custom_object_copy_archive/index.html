@@ -108,20 +108,25 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Huangjianke&#39;s Blog">
-<meta property="og:url" content="http://blog.huangjianke.com/index.html">
+  <meta name="description" content="runtime实现通用copy如果自定义类的子类，模型套模型你真的会copy吗，小心有坑。copy需要自定义类继承NSCopying协议">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码">
+<meta property="og:url" content="http://blog.huangjianke.com/posts/ios_custom_object_copy_archive/index.html">
 <meta property="og:site_name" content="Huangjianke&#39;s Blog">
+<meta property="og:description" content="runtime实现通用copy如果自定义类的子类，模型套模型你真的会copy吗，小心有坑。copy需要自定义类继承NSCopying协议">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-12T08:29:41.105Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Huangjianke&#39;s Blog">
+<meta name="twitter:title" content="iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码">
+<meta name="twitter:description" content="runtime实现通用copy如果自定义类的子类，模型套模型你真的会copy吗，小心有坑。copy需要自定义类继承NSCopying协议">
 
 
 
 
 
 
-  <link rel="canonical" href="http://blog.huangjianke.com/"/>
+  <link rel="canonical" href="http://blog.huangjianke.com/posts/ios_custom_object_copy_archive/"/>
 
 
 
@@ -131,7 +136,7 @@
   };
 </script>
 
-  <title>Huangjianke's Blog</title>
+  <title>iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码 | Huangjianke's Blog</title>
   
 
 
@@ -178,8 +183,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <a href="https://github.com/huangjianke" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
@@ -221,7 +225,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
   </li>
@@ -281,344 +285,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.huangjianke.com/posts/stack_melt/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="huangjianke">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangjianke's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/stack_melt/" itemprop="url">
-                  如何用JavaScript+Canvas开发一款超级烧脑小游戏？
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-12 15:45:44 / 修改时间：16:27:44" itemprop="dateCreated datePublished" datetime="2019-09-12T15:45:44+08:00">2019-09-12</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/微信小游戏/" itemprop="url" rel="index"><span itemprop="name">微信小游戏</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <meta name="referrer" content="no-referrer">
-
-<blockquote>
-<p>启逻辑之高妙，因想象而自由</p>
-</blockquote>
-<p><strong>层叠拼图Plus</strong>是一款需要空间想象力和逻辑推理能力完美结合的微信小游戏，偶消奇不消，在简单的游戏规则下却有着无数种可能性，需要你充分发挥想象力去探索，看似简单却具有极大的挑战性和趣味性，这就是其魅力所在！</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/stack_melt/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.huangjianke.com/posts/gitter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="huangjianke">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangjianke's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/gitter/" itemprop="url">
-                  Gitter - 高颜值GitHub小程序客户端诞生记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-01-25 15:52:09" itemprop="dateCreated datePublished" datetime="2019-01-25T15:52:09+08:00">2019-01-25</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-09-12 16:28:13" itemprop="dateModified" datetime="2019-09-12T16:28:13+08:00">2019-09-12</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <meta name="referrer" content="no-referrer">
-
-<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>嗯，可能一进来大部分人都会觉得，为什么还会有人重复造轮子，GitHub第三方客户端都已经烂大街啦。确实，一开始我自己也是这么觉得的，也问过自己是否真的有意义再去做这样一个项目。思考再三，以下原因也决定了我愿意去做一个让自己满意的GitHub第三方客户端。</p>
-<ul>
-<li><p>对于时常关注GitHub Trending列表的笔者来说，迫切需要一个更简单的方式随时随地去跟随GitHub最新的技术潮流；</p>
-</li>
-<li><p>已有的一些GitHub小程序客户端颜值与功能并不能满足笔者的要求；</p>
-</li>
-<li><p>听说iOS开发没人要了，掌握一门新的开发技能，又何尝不可？</p>
-</li>
-<li><p>其实也没那么多原因，既然想做，那就去做，开心最重要。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/gitter/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -650,11 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/ios_custom_object_copy_archive/" itemprop="url">
-                  iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码
-                </a>
+          <h1 class="post-title" itemprop="name headline">iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码
               
             
           </h1>
@@ -747,16 +412,15 @@
       
 
       
-        
-          <h3 id="runtime实现通用copy"><a href="#runtime实现通用copy" class="headerlink" title="runtime实现通用copy"></a>runtime实现通用copy</h3><p>如果自定义类的子类，模型套模型你真的会copy吗，小心有坑。<br>copy需要自定义类继承NSCopying协议</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/ios_custom_object_copy_archive/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <h3 id="runtime实现通用copy"><a href="#runtime实现通用copy" class="headerlink" title="runtime实现通用copy"></a>runtime实现通用copy</h3><p>如果自定义类的子类，模型套模型你真的会copy吗，小心有坑。<br>copy需要自定义类继承NSCopying协议</p>
+<a id="more"></a>
+<p><code>#import &lt;objc/runtime.h&gt;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">- (id)copyWithZone:(NSZone *)zone &#123;</span><br><span class="line">    </span><br><span class="line">    id obj = [[[self class] allocWithZone:zone] init];</span><br><span class="line">    Class class = [self class];</span><br><span class="line">    while (class != [NSObject class]) &#123;</span><br><span class="line">        unsigned int count;</span><br><span class="line">        Ivar *ivar = class_copyIvarList(class, &amp;count);</span><br><span class="line">        for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">            Ivar iv = ivar[i];</span><br><span class="line">            const char *name = ivar_getName(iv);</span><br><span class="line">            NSString *strName = [NSString stringWithUTF8String:name];</span><br><span class="line">            //利用KVC取值</span><br><span class="line">            id value = [[self valueForKey:strName] copy];//如果还套了模型也要copy呢</span><br><span class="line">            [obj setValue:value forKey:strName];</span><br><span class="line">        &#125;</span><br><span class="line">        free(ivar);</span><br><span class="line">        </span><br><span class="line">        class = class_getSuperclass(class);//记住还要遍历父类的属性呢</span><br><span class="line">    &#125;</span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="runtime实现通用归档解档"><a href="#runtime实现通用归档解档" class="headerlink" title="runtime实现通用归档解档"></a>runtime实现通用归档解档</h3><p>归档解档需要自定义类继承NSCoding协议</p>
+<p><code>#import &lt;objc/runtime.h&gt;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - 归档、解档</span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)encoder &#123;</span><br><span class="line">    </span><br><span class="line">    Class class = [self class];</span><br><span class="line">    while (class != [NSObject class]) &#123;</span><br><span class="line">        unsigned int count;</span><br><span class="line">        Ivar *ivar = class_copyIvarList(class, &amp;count);</span><br><span class="line">        for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">            Ivar iv = ivar[i];</span><br><span class="line">            const char *name = ivar_getName(iv);</span><br><span class="line">            NSString *strName = [NSString stringWithUTF8String:name];</span><br><span class="line">            //利用KVC取值</span><br><span class="line">            id value = [self valueForKey:strName];</span><br><span class="line">            [encoder encodeObject:value forKey:strName];</span><br><span class="line">        &#125;</span><br><span class="line">        free(ivar);</span><br><span class="line">        </span><br><span class="line">        class = class_getSuperclass(class);//记住还要遍历父类的属性呢</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (id)initWithCoder:(NSCoder *)decoder &#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        Class class = [self class];</span><br><span class="line">        while (class != [NSObject class]) &#123;</span><br><span class="line">            unsigned int count = 0;</span><br><span class="line">            //获取类中所有成员变量名</span><br><span class="line">            Ivar *ivar = class_copyIvarList(class, &amp;count);</span><br><span class="line">            for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">                Ivar iva = ivar[i];</span><br><span class="line">                const char *name = ivar_getName(iva);</span><br><span class="line">                NSString *strName = [NSString stringWithUTF8String:name];</span><br><span class="line">                //进行解档取值</span><br><span class="line">                id value = [decoder decodeObjectForKey:strName];</span><br><span class="line">                //利用KVC对属性赋值</span><br><span class="line">                [self setValue:value forKey:strName];</span><br><span class="line">            &#125;</span><br><span class="line">            free(ivar);</span><br><span class="line">            </span><br><span class="line">            class = class_getSuperclass(class);//记住还要遍历父类的属性呢</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -774,195 +438,40 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.huangjianke.com/posts/git_repos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="huangjianke">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangjianke's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/git_repos/" itemprop="url">
-                  Git仓库迁移保留提交记录
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-22 00:01:31" itemprop="dateCreated datePublished" datetime="2018-07-22T00:01:31+08:00">2018-07-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-09-12 16:29:05" itemprop="dateModified" datetime="2019-09-12T16:29:05+08:00">2019-09-12</time>
-              
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a></span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          <blockquote>
-<p>最近需要迁移Git仓库，有如下需求</p>
-</blockquote>
-<ul>
-<li>保留原有仓库的分支</li>
-<li>保留原有仓库的提交记录</li>
-</ul>
-<p>通过查找资料，最后发现一种最优Git仓库迁移方案。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/git_repos/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/git_repos/" rel="next" title="Git仓库迁移保留提交记录">
+                <i class="fa fa-chevron-left"></i> Git仓库迁移保留提交记录
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/gitter/" rel="prev" title="Gitter - 高颜值GitHub小程序客户端诞生记">
+                Gitter - 高颜值GitHub小程序客户端诞生记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -972,14 +481,19 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -1000,8 +514,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1101,6 +624,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#runtime实现通用copy"><span class="nav-number">1.</span> <span class="nav-text">runtime实现通用copy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#runtime实现通用归档解档"><span class="nav-number">2.</span> <span class="nav-text">runtime实现通用归档解档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1237,6 +776,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
 
   
 
