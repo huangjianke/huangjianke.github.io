@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一、引言1.1「腾讯位置服务」是什么？ 立足生态，连接未来  「腾讯位置服务」平台依托庞大的数据生态，以定位、地图展示、地点搜索、路线规划、导航、室内图、海外图等位置服务能力和LBS大数据能力为基础，面向开发者提供方便、易用、高效的LBS服务产品。当前「腾讯位置服务」数据能力已覆盖10亿人的位置行为数据、日均超过600亿次的定位调用、每日支持1亿次位置检索。">
+<meta name="keywords" content="微信小程序,腾讯位置服务,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「腾讯位置服务」全面拥抱微信小程序，让出行更简单！">
+<meta property="og:url" content="http://blog.huangjianke.com/posts/lbs-weapp/index.html">
+<meta property="og:site_name" content="Huangjianke&#39;s Blog">
+<meta property="og:description" content="一、引言1.1「腾讯位置服务」是什么？ 立足生态，连接未来  「腾讯位置服务」平台依托庞大的数据生态，以定位、地图展示、地点搜索、路线规划、导航、室内图、海外图等位置服务能力和LBS大数据能力为基础，面向开发者提供方便、易用、高效的LBS服务产品。当前「腾讯位置服务」数据能力已覆盖10亿人的位置行为数据、日均超过600亿次的定位调用、每日支持1亿次位置检索。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/12/2/16ec6f24ae7b3837?w=500&h=1083&f=png&s=576905">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/12/3/16ec96413a202656?w=1540&h=1112&f=png&s=163780">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/12/3/16ec980ae18b2f04?w=1876&h=468&f=png&s=322426">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/12/3/16ec9dcdcb40c7e1?w=500&h=1083&f=png&s=448918">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/12/3/16eca245caae6743?w=2460&h=598&f=png&s=80189">
+<meta property="og:updated_time" content="2020-01-02T05:57:59.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「腾讯位置服务」全面拥抱微信小程序，让出行更简单！">
+<meta name="twitter:description" content="一、引言1.1「腾讯位置服务」是什么？ 立足生态，连接未来  「腾讯位置服务」平台依托庞大的数据生态，以定位、地图展示、地点搜索、路线规划、导航、室内图、海外图等位置服务能力和LBS大数据能力为基础，面向开发者提供方便、易用、高效的LBS服务产品。当前「腾讯位置服务」数据能力已覆盖10亿人的位置行为数据、日均超过600亿次的定位调用、每日支持1亿次位置检索。">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/12/2/16ec6f24ae7b3837?w=500&h=1083&f=png&s=576905">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.huangjianke.com/posts/lbs-weapp/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>「腾讯位置服务」全面拥抱微信小程序，让出行更简单！ | Huangjianke's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/huangjianke" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Huangjianke's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">不忘初心，方得始终</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.huangjianke.com/posts/lbs-weapp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="huangjianke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Huangjianke's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「腾讯位置服务」全面拥抱微信小程序，让出行更简单！
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-02 13:53:30 / 修改时间：13:57:59" itemprop="dateCreated datePublished" datetime="2020-01-02T13:53:30+08:00">2020-01-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/微信小程序/" itemprop="url" rel="index"><span itemprop="name">微信小程序</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><h3 id="1-1「腾讯位置服务」是什么？"><a href="#1-1「腾讯位置服务」是什么？" class="headerlink" title="1.1「腾讯位置服务」是什么？"></a>1.1「腾讯位置服务」是什么？</h3><blockquote>
+<p>立足生态，连接未来</p>
+</blockquote>
+<p>「腾讯位置服务」平台依托庞大的数据生态，以定位、地图展示、地点搜索、路线规划、导航、室内图、海外图等位置服务能力和LBS大数据能力为基础，面向开发者提供方便、易用、高效的LBS服务产品。当前「腾讯位置服务」数据能力已覆盖10亿人的位置行为数据、日均超过600亿次的定位调用、每日支持1亿次位置检索。</p>
+<a id="more"></a>
+<h3 id="1-2「腾讯位置服务」可应用的场景？"><a href="#1-2「腾讯位置服务」可应用的场景？" class="headerlink" title="1.2「腾讯位置服务」可应用的场景？"></a>1.2「腾讯位置服务」可应用的场景？</h3><p>随着功能的日益完善，腾讯位置服务可适用的场景也越来越多，如<strong>物流业务</strong>、<strong>智能出行</strong>、<strong>o2o业务</strong>、<strong>共享单车</strong>、<strong>运动健康</strong>、<strong>LBS游戏服务</strong>等行业均可见「腾讯位置服务」的身影。笔者也将通过此文展示下腾讯位置服务在<strong>智能出行</strong>行业的应用与实践。</p>
+<h2 id="二、需求背景"><a href="#二、需求背景" class="headerlink" title="二、需求背景"></a>二、需求背景</h2><h3 id="2-1-「乘车二维码」微信小程序"><a href="#2-1-「乘车二维码」微信小程序" class="headerlink" title="2.1 「乘车二维码」微信小程序"></a>2.1 「乘车二维码」微信小程序</h3><p>自从2017年微信上线小程序以来，小程序已经迅速成长为一个巨大的生态，吸引各行各业的开发者或服务商参与其中。小程序与线下场景的结合也日益紧密，其中，<strong>乘车二维码</strong>微信小程序无疑让人们的出行服务变的更加简单、快捷。先乘车，后扣费，无论手机是否联网，是否有信号，都可以很顺畅的进行乘车。</p>
+<h3 id="2-2-完善「乘车二维码」微信小程序"><a href="#2-2-完善「乘车二维码」微信小程序" class="headerlink" title="2.2 完善「乘车二维码」微信小程序"></a>2.2 完善「乘车二维码」微信小程序</h3><p>有了最基本的「乘车二维码」功能对用户体验来说，还是远远不够的，为此，从用户体验的角度出发，我们逐渐新增了一些实用的功能，比如查询附近的公交信息、用户路线规划等。也正因为新增了这些实用性的功能，我们发现「乘车二维码」微信小程序在数据表现(如日活、留存、使用时长)方面更加出色了，「腾讯位置服务」也成为我们「乘车二维码」微信小程序内不可或缺的角色。</p>
+<p>接下来，笔者将通过<strong>公交地图</strong>、<strong>路线规划</strong>两个功能点更加详细的介绍「腾讯位置服务」中的微信小程序 <code>JavaScript SDK</code>、<strong>微信小程序插件</strong>。</p>
+<h2 id="三、公交地图"><a href="#三、公交地图" class="headerlink" title="三、公交地图"></a>三、公交地图</h2><h3 id="3-1-效果预览"><a href="#3-1-效果预览" class="headerlink" title="3.1 效果预览"></a>3.1 效果预览</h3><p><img src="https://user-gold-cdn.xitu.io/2019/12/2/16ec6f24ae7b3837?w=500&amp;h=1083&amp;f=png&amp;s=576905" alt="公交地图"></p>
+<h3 id="3-2-技术点分析"><a href="#3-2-技术点分析" class="headerlink" title="3.2 技术点分析"></a>3.2 技术点分析</h3><p>在上面的效果预览图中，我们不难发现，实现公交地图功能主要包含以下技术要点：</p>
+<ul>
+<li>获取用户当前位置信息</li>
+<li>通过坐标点获取附近公交信息</li>
+<li>地图展示、标注</li>
+</ul>
+<h3 id="3-3-技术点实现"><a href="#3-3-技术点实现" class="headerlink" title="3.3 技术点实现"></a>3.3 技术点实现</h3><h4 id="3-3-1-获取用户当前位置信息"><a href="#3-3-1-获取用户当前位置信息" class="headerlink" title="3.3.1 获取用户当前位置信息"></a>3.3.1 获取用户当前位置信息</h4><p>我们可以通过微信小程序官方提供的api：<a href="https://developers.weixin.qq.com/miniprogram/dev/api/location/wx.getLocation.html" target="_blank" rel="noopener">wx.getLocation()</a>，来获取用户的当前位置坐标点信息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wx.getLocation(&#123;</span><br><span class="line"> type: <span class="string">'gcj02'</span>,</span><br><span class="line"> success (res) &#123;</span><br><span class="line">   <span class="keyword">const</span> latitude = res.latitude</span><br><span class="line">   <span class="keyword">const</span> longitude = res.longitude</span><br><span class="line"> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这里我们将 <code>type</code> 指定为 <code>gcj02</code> 获取到的坐标点信息可在后续接口中直接使用，相对应的，如果将 <code>type</code> 指定为 <code>wgs84</code>，后续我们需要进一步进行坐标转换。</p>
+<p>还有个需要注意的是，该接口需要经过用户授权同意才能调用，因此我们需要在 <code>app.json</code> 文件中新增相关配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.json</span></span><br><span class="line"><span class="string">"permission"</span>: &#123;</span><br><span class="line">  <span class="string">"scope.userLocation"</span>: &#123;</span><br><span class="line">    <span class="string">"desc"</span>: <span class="string">"你的位置信息将用于查询公交信息"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-3-2-获取附近公交信息"><a href="#3-3-2-获取附近公交信息" class="headerlink" title="3.3.2 获取附近公交信息"></a>3.3.2 获取附近公交信息</h4><p>附近公交数据哪里来？</p>
+<p>这里我们便用到了微信小程序原生<code>LBS</code>能力的最佳拍档– <strong>微信小程序<code>JavaScript SDK</code></strong>。</p>
+<p>腾讯位置服务为微信小程序提供了基础的标点能力、线和圆的绘制接口等地图组件和位置展示、地图选点等地图API位置服务能力支持，使得开发者可以自由地实现自己的微信小程序产品。 在此基础上，腾讯位置服务<strong>微信小程序<code>JavaScript SDK</code></strong>是专为小程序开发者提供的<code>LBS</code>数据服务工具包，可以在小程序中调用腾讯位置服务的<code>POI</code>检索、关键词输入提示、地址解析、逆地址解析、行政区划和距离计算等数据服务，让您的小程序更强大！</p>
+<p>接下来笔者将展示如何通过<strong>微信小程序<code>JavaScript SDK</code></strong>获取附近公交的信息。</p>
+<ol>
+<li><p>开通「腾讯位置服务」：在微信小程序后台依次选择<strong>开发-&gt;开发者工具-&gt;腾讯位置服务</strong>，然后点击开通按钮，按照提示为您的小程序开通「腾讯位置服务」<br><img src="https://user-gold-cdn.xitu.io/2019/12/3/16ec96413a202656?w=1540&amp;h=1112&amp;f=png&amp;s=163780" alt="开通腾讯位置服务"></p>
+</li>
+<li><p>申请开发者密钥(key)：<a href="https://lbs.qq.com/dev/console/key/manage" target="_blank" rel="noopener">申请密钥</a></p>
+</li>
+<li><p>安全域名设置：在在微信小程序后台依次选择<strong>设置-&gt;开发设置中</strong>设置<code>request</code>合法域名，添加 <code>https://apis.map.qq.com</code></p>
+</li>
+<li><p>下载<strong>微信小程序 <code>JavaScript SDK</code></strong>：<a href="http://3gimg.qq.com/lightmap/xcx/jssdk/qqmap-wx-jssdk1.2.zip" target="_blank" rel="noopener">微信小程序JavaScriptSDK v1.2</a></p>
+</li>
+<li><p>小程序使用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// 引入 JavaScript SDK 核心类</span></span><br><span class="line"><span class="keyword">let</span> QQMapWX = <span class="built_in">require</span>(<span class="string">'../../libs/qqmap-wx-jssdk.js'</span>);</span><br><span class="line"><span class="keyword">let</span> qqmapsdk;</span><br><span class="line">Page(&#123;</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 实例化API核心类</span></span><br><span class="line">    qqmapsdk = <span class="keyword">new</span> QQMapWX(&#123;</span><br><span class="line">      key: <span class="string">'申请的key'</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  onShow: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 调用接口</span></span><br><span class="line">    qqmapsdk.search(&#123;</span><br><span class="line">      keyword: <span class="string">'公交车站'</span>,</span><br><span class="line">      location: <span class="string">'28.636767,115.855820'</span>,</span><br><span class="line">      filter: <span class="string">'category=公交站'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">      &#125;,</span><br><span class="line">      fail: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">      &#125;,</span><br><span class="line">      complete: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>返回结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/3/16ec980ae18b2f04?w=1876&amp;h=468&amp;f=png&amp;s=322426" alt="附近公交信息"></p>
+<p>可以看到，我们已经拿到了我们想要的公交数据，接下来将公交数据在地图上标注展示出来。</p>
+<h4 id="3-3-3-地图展示、标注"><a href="#3-3-3-地图展示、标注" class="headerlink" title="3.3.3 地图展示、标注"></a>3.3.3 地图展示、标注</h4><p>公交信息的展示使用到了「腾讯位置服务」为小程序提供的 <a href="https://developers.weixin.qq.com/miniprogram/dev/component/map.html" target="_blank" rel="noopener">map</a> 组件，我们需要将公交信息组装成 <code>markers</code> 从而绘制到地图组件上。</p>
+<p>关于地图组件的具体使用可参考官方文档：<a href="https://developers.weixin.qq.com/miniprogram/dev/component/map.html" target="_blank" rel="noopener">map组件的使用</a></p>
+<h3 id="3-4-小结"><a href="#3-4-小结" class="headerlink" title="3.4 小结"></a>3.4 小结</h3><p>可以看到，我们通过<strong>微信小程序<code>JavaScript SDK</code></strong>可以很轻松的获取到附近的公交信息。当然，<strong>微信小程序<code>JavaScript SDK</code></strong>的能力也远远不仅于此，它还提供很多实用性的功能满足多种使用场景：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方法</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">search(options:Object)</td>
+<td style="text-align:left">地点搜索，搜索周边poi，比如：“酒店” “餐饮” “娱乐” “学校” 等等</td>
+</tr>
+<tr>
+<td style="text-align:left">getSuggestion(options:Object)</td>
+<td style="text-align:left">用于获取输入关键字的补完与提示，帮助用户快速输入</td>
+</tr>
+<tr>
+<td style="text-align:left">reverseGeocoder(options:Object)</td>
+<td style="text-align:left">提供由坐标到坐标所在位置的文字描述的转换。输入坐标返回地理位置信息和附近poi列表</td>
+</tr>
+<tr>
+<td style="text-align:left">geocoder(options:Object)</td>
+<td style="text-align:left">提供由地址描述到所述位置坐标的转换，与逆地址解析的过程正好相反</td>
+</tr>
+<tr>
+<td style="text-align:left">direction(options:Object)</td>
+<td style="text-align:left">提供驾车，步行，骑行，公交的路线规划能力</td>
+</tr>
+<tr>
+<td style="text-align:left">getCityList()</td>
+<td style="text-align:left">获取全国城市列表数据</td>
+</tr>
+<tr>
+<td style="text-align:left">getDistrictByCityId(options:Object)</td>
+<td style="text-align:left">通过城市ID返回城市下的区县</td>
+</tr>
+<tr>
+<td style="text-align:left">calculateDistance(options:Object)</td>
+<td style="text-align:left">计算一个点到多点的步行、驾车距离</td>
+</tr>
+</tbody>
+</table>
+<p>详细使用可参考官方文档：<a href="https://lbs.qq.com/qqmap_wx_jssdk/qqmapwx.html" target="_blank" rel="noopener">微信小程序JavaScript SDK 使用方法</a></p>
+<p><strong><em>需要注意的是，每个key的每个服务接口的调用量都有日调用量：1万次/Key、并发数：5次/key/秒的限制，如若您的微信小程序使用量超出这个限制，可通过<a href="https://lbs.qq.com/dev/console/quota/applyList" target="_blank" rel="noopener">控制台-&gt;配额申请</a>中免费申请你需要的配额。</em></strong></p>
+<h2 id="四、路线规划"><a href="#四、路线规划" class="headerlink" title="四、路线规划"></a>四、路线规划</h2><p><strong>如果说，「乘车二维码」微信小程序让人们的出行变得更加简单、快捷。</strong></p>
+<p><strong>那么，路线规划插件则为人们怎么出行提供了最优解。</strong></p>
+<h3 id="4-1-效果预览"><a href="#4-1-效果预览" class="headerlink" title="4.1 效果预览"></a>4.1 效果预览</h3><p><img src="https://user-gold-cdn.xitu.io/2019/12/3/16ec9dcdcb40c7e1?w=500&amp;h=1083&amp;f=png&amp;s=448918" alt="公交地图"></p>
+<h3 id="4-2-路线规划插件"><a href="#4-2-路线规划插件" class="headerlink" title="4.2 路线规划插件"></a>4.2 路线规划插件</h3><blockquote>
+<p>腾讯位置服务路线规划插件 提供路线规划等功能，根据起终点，多种出行方式智能规划最佳出行路线及详情。开发者可以将路线规划插件嵌入到自建小程序的页面里，实现路线规划功能。</p>
+</blockquote>
+<p>可以看到，通过使用路线规划插件，我们可以很方便的在我们「乘车二维码」微信小程序内完成路线规划功能，接入步骤也较为简单，主要分为以下几步：</p>
+<ol>
+<li><p>插件申请接入：<br>在微信小程序后台管理平台中，依次选择<strong>设置-&gt;第三方服务-&gt;插件管理</strong>里点击<strong>添加插件</strong>，搜索<strong>腾讯位置服务路线规划</strong>申请，审核通过后，小程序开发者可在小程序内使用该插件。<br><img src="https://user-gold-cdn.xitu.io/2019/12/3/16eca245caae6743?w=2460&amp;h=598&amp;f=png&amp;s=80189" alt="路线规划插件"></p>
+</li>
+<li><p>引入插件包：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.json</span></span><br><span class="line"><span class="string">"plugins"</span>: &#123;</span><br><span class="line">    <span class="string">"routePlan"</span>: &#123;</span><br><span class="line">      <span class="string">"version"</span>: <span class="string">"1.0.5"</span>,</span><br><span class="line">      <span class="string">"provider"</span>: <span class="string">"wx50b5593e81dd937a"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置定位授权: </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.json</span></span><br><span class="line"><span class="string">"permission"</span>: &#123;</span><br><span class="line">  <span class="string">"scope.userLocation"</span>: &#123;</span><br><span class="line">    <span class="string">"desc"</span>: <span class="string">"你的位置信息将用于小程序定位"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用插件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> key = <span class="string">'申请的key'</span>;  <span class="comment">//使用在腾讯位置服务申请的key</span></span><br><span class="line"><span class="keyword">let</span> referer = <span class="string">''</span>;   <span class="comment">//调用插件的app的名称</span></span><br><span class="line"><span class="keyword">let</span> endPoint = <span class="built_in">JSON</span>.stringify(&#123;  <span class="comment">//终点</span></span><br><span class="line">  <span class="string">'name'</span>: <span class="string">'八一广场'</span>,</span><br><span class="line">  <span class="string">'latitude'</span>: <span class="number">28.673400</span>,</span><br><span class="line">  <span class="string">'longitude'</span>: <span class="number">115.904500</span></span><br><span class="line">&#125;);</span><br><span class="line">wx.navigateTo(&#123;</span><br><span class="line">  url: <span class="string">'plugin://routePlan/index?key='</span> + key + <span class="string">'&amp;referer='</span> + referer + <span class="string">'&amp;endPoint='</span> + endPoint</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在集成路线规划插件后，进一步丰富了我们「乘车二维码」微信小程序的使用场景，现在，用户可以在不使用地图类App的情况下进行最优路线规划，躲避拥堵，方便又快捷。</p>
+<p>基于「腾讯位置服务」的路线规划插件主要有以下优势：</p>
+<ul>
+<li><strong>大数据加持，智能推荐多种出行方案</strong>。给出用户合理路线规划是最基本功能，而能否通过大数据及实时路况智能呈现更合适的方案，甚至比用户多想一步超出其预期，才是提升产品体验、提高用户粘度的关键。</li>
+<li><strong>海量公交运营数据，贴心提醒用户合适路线</strong>。公共交通是出行的主要方式之一，城市里丰富的公共交通资源让我们从A点到B点有太多的选择。路线规划插件的公交方案不仅可以提供多种出行偏好如少步行、时间短、换乘少等供用户选择，而且我们还整合了大量的公交实时运营数据，包括交通管制、运营时间、线路临时更改等等，可以准确告知用户在某个出行的时间内是否有合适的车辆，避免错过公交的尴尬。</li>
+</ul>
+<h3 id="4-3-小结"><a href="#4-3-小结" class="headerlink" title="4.3 小结"></a>4.3 小结</h3><p>从「腾讯位置服务」官网可以看到，目前「腾讯位置服务」已经为我们提供了三款实用性功能插件：</p>
+<ul>
+<li><p><strong>路线规划：</strong>根据起点、终点，智能规划最佳出行路线，并支持多种出行方式。</p>
+</li>
+<li><p><strong>地铁图：</strong>支持全国所有城市地铁线路静态展示、信息查询、线路检索及规划等功能。</p>
+</li>
+<li><p><strong>地图选点：</strong>快速、准确地选择并确认自己的当前位置，并将相关位置信息回传给开发者。</p>
+</li>
+</ul>
+<p>「腾讯位置服务」基于微信提供的小程序插件能力，可以说让微信小程序一步拥有地图功能，大大的减少了我们开发的工作量、提升用户体验、增加了用户在我们「乘车二维码」微信小程序的使用场景。是我们实现地图功能的最佳伙伴。</p>
+<p>相信后续「腾讯位置服务」也会为我们提供更多功能的插件。</p>
+<p>更多有关「腾讯位置服务」小程序插件的使用可查看官方文档：<a href="https://lbs.qq.com/miniprogram_plugin/index.html" target="_blank" rel="noopener">微信小程序插件</a></p>
+<h2 id="五、结语"><a href="#五、结语" class="headerlink" title="五、结语"></a>五、结语</h2><p>我们在完善「乘车二维码」微信小程序的道路上从未停止过脚步，给用户提供完美的出行体验是我们的终极目标。我们也不会停止在「腾讯位置服务」上的探索，目前所使用到的能力也仅仅是冰山一角，后续我们还会继续尝试「腾讯位置服务」提供的<strong>个性化地图</strong>、<strong>地铁图</strong>等能力，力争给用户提供最完美的出行体验。</p>
+<p>也期待着未来在微信小程序端「腾讯位置服务」能提供更多的使用场景，让出行更简单！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微信小程序/" rel="tag"># 微信小程序</a>
+          
+            <a href="/tags/腾讯位置服务/" rel="tag"># 腾讯位置服务</a>
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/stack_melt/" rel="next" title="如何用JavaScript+Canvas开发一款超级烧脑小游戏？">
+                <i class="fa fa-chevron-left"></i> 如何用JavaScript+Canvas开发一款超级烧脑小游戏？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="huangjianke" />
+            
+              <p class="site-author-name" itemprop="name">huangjianke</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/huangjianke" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1「腾讯位置服务」是什么？"><span class="nav-number">1.1.</span> <span class="nav-text">1.1「腾讯位置服务」是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2「腾讯位置服务」可应用的场景？"><span class="nav-number">1.2.</span> <span class="nav-text">1.2「腾讯位置服务」可应用的场景？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、需求背景"><span class="nav-number">2.</span> <span class="nav-text">二、需求背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-「乘车二维码」微信小程序"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 「乘车二维码」微信小程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-完善「乘车二维码」微信小程序"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 完善「乘车二维码」微信小程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、公交地图"><span class="nav-number">3.</span> <span class="nav-text">三、公交地图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-效果预览"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 效果预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-技术点分析"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 技术点分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-技术点实现"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 技术点实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-获取用户当前位置信息"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1 获取用户当前位置信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-获取附近公交信息"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2 获取附近公交信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-地图展示、标注"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.3.3 地图展示、标注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-小结"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、路线规划"><span class="nav-number">4.</span> <span class="nav-text">四、路线规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-效果预览"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 效果预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-路线规划插件"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 路线规划插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-小结"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、结语"><span class="nav-number">5.</span> <span class="nav-text">五、结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">huangjianke</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
