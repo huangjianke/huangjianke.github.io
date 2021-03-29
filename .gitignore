@@ -1,7 +1,16 @@
-.DS_Store
-Thumbs.db
-db.json
-*.log
-node_modules/
-public/
-.deploy*/
+# hidden files
+.*
+!.github
+
+# jekyll cache
+_site
+vendor
+
+# rubygem
+*.gem
+# yard docs
+doc
+
+# npm dependencies
+node_modules
+package-lock.json
