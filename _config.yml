@@ -42,9 +42,6 @@ social:
     # The first element serves as the copyright owner's link
     - https://github.com/kokohuang       # change to your github homepage
     - https://twitter.com/jianke00      # change to your twitter homepage
-    # Uncomment below to add more social links
-    # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/username
 
 google_site_verification: google_meta_tag_verification # change to your verification string
 # --------------------------
