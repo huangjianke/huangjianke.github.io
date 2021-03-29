@@ -1,0 +1,597 @@
+I"��<blockquote>
+  <p>✨<strong>flutter_easyloading</strong>: 一个简单易用的<strong>Flutter</strong>插件，包含23种loading动画效果、进度条展示、Toast展示。纯Flutter端实现，支持iOS、Android。</p>
+
+  <p>✨<strong>开源地址</strong>：https://github.com/huangjianke/flutter_easyloading</p>
+</blockquote>
+
+<h2 id="前言">前言</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Flutter</code>是<code class="language-plaintext highlighter-rouge">Google</code>在2017年推出的一套开源跨平台<code class="language-plaintext highlighter-rouge">UI</code>框架，可以快速地在<code class="language-plaintext highlighter-rouge">iOS</code>、<code class="language-plaintext highlighter-rouge">Android</code>和<code class="language-plaintext highlighter-rouge">Web</code>平台上构建高质量的原生用户界面。<code class="language-plaintext highlighter-rouge">Flutter</code>发布至今，不可谓不说是大受追捧，吸引了大批<code class="language-plaintext highlighter-rouge">App</code>原生开发者、<code class="language-plaintext highlighter-rouge">Web</code>开发者前赴后继的投入其怀抱，也正由于<code class="language-plaintext highlighter-rouge">Flutter</code>是跨平台领域的新星，总的来说，其生态目前还不是十分完善，我相信对于习惯了原生开发的同学们来说，找轮子肯定没有了那种章手就莱的感觉。比如说这篇文章即将讲到的，如何在<code class="language-plaintext highlighter-rouge">Flutter</code>应用内简单、方便的展示<code class="language-plaintext highlighter-rouge">Toast</code>或者<code class="language-plaintext highlighter-rouge">Loading</code>框呢？</p>
+
+<!--more-->
+
+<h2 id="探索">探索</h2>
+
+<p>起初，我也在<a href="https://pub.dev/">pub</a>上找到了几个比较优秀的插件：</p>
+
+<ul>
+  <li><a href="https://github.com/PonnamKarthik/FlutterToast">FlutterToast</a>: 这个插件应该是很多刚入坑<code class="language-plaintext highlighter-rouge">Flutter</code>的同学们都使用过的，它依赖于原生，但对于UI层级的问题，最好在Flutter端解决，这样便于后期维护，也可以减少兼容性问题；</li>
+  <li><a href="https://github.com/OpenFlutter/flutter_oktoast">flutter_oktoast</a>: 纯<code class="language-plaintext highlighter-rouge">Flutter</code>端实现，调用方便。但缺少<code class="language-plaintext highlighter-rouge">loading</code>、进度条展示，仍可自定义实现；</li>
+</ul>
+
+<p>试用过后，发现这些插件都或多或少不能满足我们的产品需求，于是便结合自己产品的需求来造了这么个轮子，也希望可以帮到有需要的同学们。效果预览：</p>
+
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/21/16fc609d1b783cae?w=448&amp;h=960&amp;f=gif&amp;s=1148191" alt="flutter_easyloading" /></p>
+
+<h2 id="实现">实现</h2>
+
+<h3 id="showdialog-实现">showDialog 实现</h3>
+
+<p>先看看初期我们实现弹窗的方式<code class="language-plaintext highlighter-rouge">showDialog</code>，部分源码如下：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="n">Future</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">showDialog</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;({</span>
+  <span class="nd">@required</span> <span class="n">BuildContext</span> <span class="n">context</span><span class="o">,</span>
+  <span class="kt">bool</span> <span class="n">barrierDismissible</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span>
+  <span class="nd">@Deprecated</span><span class="o">(</span>
+    <span class="s">'Instead of using the "child" argument, return the child from a closure '</span>
+    <span class="s">'provided to the "builder" argument. This will ensure that the BuildContext '</span>
+    <span class="s">'is appropriate for widgets built in the dialog. '</span>
+    <span class="s">'This feature was deprecated after v0.2.3.'</span>
+  <span class="o">)</span>
+  <span class="n">Widget</span> <span class="n">child</span><span class="o">,</span>
+  <span class="n">WidgetBuilder</span> <span class="n">builder</span><span class="o">,</span>
+  <span class="kt">bool</span> <span class="n">useRootNavigator</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span>
+<span class="o">})</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这里有个必传参数<code class="language-plaintext highlighter-rouge">context</code>，想必接触过<code class="language-plaintext highlighter-rouge">Flutter</code>开发一段时间的同学，都会对<code class="language-plaintext highlighter-rouge">BuildContext</code>有所了解。简单来说<code class="language-plaintext highlighter-rouge">BuildContext</code>就是构建<code class="language-plaintext highlighter-rouge">Widget</code>中的应用上下文，是<code class="language-plaintext highlighter-rouge">Flutter</code>的重要组成部分。<code class="language-plaintext highlighter-rouge">BuildContext</code>只出现在两个地方：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">StatelessWidget.build</code>方法中：创建<code class="language-plaintext highlighter-rouge">StatelessWidget</code>的<code class="language-plaintext highlighter-rouge">build</code>方法</li>
+  <li><code class="language-plaintext highlighter-rouge">State</code>对象中：创建<code class="language-plaintext highlighter-rouge">StatefulWidget</code>的<code class="language-plaintext highlighter-rouge">State</code>对象的<code class="language-plaintext highlighter-rouge">build</code>方法中，另一个是<code class="language-plaintext highlighter-rouge">State</code>的成员变量</li>
+</ul>
+
+<p>有关<code class="language-plaintext highlighter-rouge">BuildContext</code>更深入的探讨不在此文的探讨范围内，如果使用<code class="language-plaintext highlighter-rouge">showDialog</code>实现弹窗操作，那么我们所考虑的问题便是，如何方便快捷的在任意地方去获取<code class="language-plaintext highlighter-rouge">BuildContext</code>，从而实现弹窗。如果有同学恰巧也用了<code class="language-plaintext highlighter-rouge">showDialog</code>这种方式的话，我相信，你也会发现，在任意地方获取<code class="language-plaintext highlighter-rouge">BuildContext</code>并不是那么简单，而且会产生很多不必要的代码量。</p>
+
+<p>那么，我们就只能使用这种体验极其不友好的方法么？</p>
+
+<p>当然不是的，请继续看。</p>
+
+<h3 id="flutter-easyloading-介绍">Flutter EasyLoading 介绍</h3>
+
+<p><code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>是一个简单易用的<code class="language-plaintext highlighter-rouge">Flutter</code>插件，包含<strong>23</strong>种<code class="language-plaintext highlighter-rouge">loading</code>动画效果、进度条展示、<code class="language-plaintext highlighter-rouge">Toast</code>展示。纯<code class="language-plaintext highlighter-rouge">Flutter</code>端实现，兼容性好，支持<code class="language-plaintext highlighter-rouge">iOS</code>、<code class="language-plaintext highlighter-rouge">Android</code>。先简单看下如何使用<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>。</p>
+
+<h4 id="安装">安装</h4>
+
+<p>将以下代码添加到您项目中的 <code class="language-plaintext highlighter-rouge">pubspec.yaml</code> 文件:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="na">dependencies</span><span class="pi">:</span>
+  <span class="na">flutter_easyloading</span><span class="pi">:</span> <span class="s">^1.1.0 // 请使用最新版</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="导入">导入</h4>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="s">'package:flutter_easyloading/flutter_easyloading.dart'</span><span class="o">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="如何使用">如何使用</h4>
+
+<p>首先, 使用 <code class="language-plaintext highlighter-rouge">FlutterEasyLoading</code> 组件包裹您的App组件:</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">MyApp</span> <span class="kd">extends</span> <span class="n">StatelessWidget</span> <span class="o">{</span>
+  <span class="nd">@override</span>
+  <span class="n">Widget</span> <span class="n">build</span><span class="o">(</span><span class="n">BuildContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">/// 子组件通常为 [MaterialApp] 或者 [CupertinoApp].</span>
+    <span class="c1">/// 这样做是为了确保 loading 组件能覆盖在其他组件之上.</span>
+    <span class="k">return</span> <span class="n">FlutterEasyLoading</span><span class="o">(</span>
+      <span class="nl">child:</span> <span class="n">MaterialApp</span><span class="o">(</span>
+        <span class="nl">title:</span> <span class="s">'Flutter EasyLoading'</span><span class="o">,</span>
+        <span class="nl">theme:</span> <span class="n">ThemeData</span><span class="o">(</span>
+          <span class="nl">primarySwatch:</span> <span class="n">Colors</span><span class="o">.</span><span class="na">blue</span><span class="o">,</span>
+        <span class="o">),</span>
+        <span class="nl">home:</span> <span class="n">MyHomePage</span><span class="o">(</span><span class="nl">title:</span> <span class="s">'Flutter EasyLoading'</span><span class="o">),</span>
+      <span class="o">),</span>
+    <span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>然后, 请尽情使用吧:</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">EasyLoading</span><span class="o">.</span><span class="na">show</span><span class="o">(</span><span class="nl">status:</span> <span class="s">'loading...'</span><span class="o">);</span> 
+
+<span class="n">EasyLoading</span><span class="o">.</span><span class="na">showProgress</span><span class="o">(</span><span class="mf">0.3</span><span class="o">,</span> <span class="nl">status:</span> <span class="s">'downloading...'</span><span class="o">);</span>
+
+<span class="n">EasyLoading</span><span class="o">.</span><span class="na">showSuccess</span><span class="o">(</span><span class="s">'Great Success!'</span><span class="o">);</span>
+
+<span class="n">EasyLoading</span><span class="o">.</span><span class="na">showError</span><span class="o">(</span><span class="s">'Failed with Error'</span><span class="o">);</span>
+
+<span class="n">EasyLoading</span><span class="o">.</span><span class="na">showInfo</span><span class="o">(</span><span class="s">'Useful Information.'</span><span class="o">);</span>
+
+<span class="n">EasyLoading</span><span class="o">.</span><span class="na">dismiss</span><span class="o">();</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="自定义样式">自定义样式</h4>
+
+<p>首先，我们看下<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>目前支持的自定义属性：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td><td class="rouge-code"><pre><span class="c1">/// loading的样式, 默认[EasyLoadingStyle.dark].</span>
+<span class="n">EasyLoadingStyle</span> <span class="n">loadingStyle</span><span class="o">;</span>
+
+<span class="c1">/// loading的指示器类型, 默认[EasyLoadingIndicatorType.fadingCircle].</span>
+<span class="n">EasyLoadingIndicatorType</span> <span class="n">indicatorType</span><span class="o">;</span>
+
+<span class="c1">/// loading的遮罩类型, 默认[EasyLoadingMaskType.none].</span>
+<span class="n">EasyLoadingMaskType</span> <span class="n">maskType</span><span class="o">;</span>
+
+<span class="c1">/// 文本的对齐方式 , 默认[TextAlign.center].</span>
+<span class="n">TextAlign</span> <span class="n">textAlign</span><span class="o">;</span>
+
+<span class="c1">/// loading内容区域的内边距.</span>
+<span class="n">EdgeInsets</span> <span class="n">contentPadding</span><span class="o">;</span>
+
+<span class="c1">/// 文本的内边距.</span>
+<span class="n">EdgeInsets</span> <span class="n">textPadding</span><span class="o">;</span>
+
+<span class="c1">/// 指示器的大小, 默认40.0.</span>
+<span class="kt">double</span> <span class="n">indicatorSize</span><span class="o">;</span>
+
+<span class="c1">/// loading的圆角大小, 默认5.0.</span>
+<span class="kt">double</span> <span class="n">radius</span><span class="o">;</span>
+
+<span class="c1">/// 文本大小, 默认15.0.</span>
+<span class="kt">double</span> <span class="n">fontSize</span><span class="o">;</span>
+
+<span class="c1">/// 进度条指示器的宽度, 默认2.0.</span>
+<span class="kt">double</span> <span class="n">progressWidth</span><span class="o">;</span>
+
+<span class="c1">/// [showSuccess] [showError] [showInfo]的展示时间, 默认2000ms.</span>
+<span class="n">Duration</span> <span class="n">displayDuration</span><span class="o">;</span>
+
+<span class="c1">/// 文本的颜色, 仅对[EasyLoadingStyle.custom]有效.</span>
+<span class="n">Color</span> <span class="n">textColor</span><span class="o">;</span>
+
+<span class="c1">/// 指示器的颜色, 仅对[EasyLoadingStyle.custom]有效.</span>
+<span class="n">Color</span> <span class="n">indicatorColor</span><span class="o">;</span>
+
+<span class="c1">/// 进度条指示器的颜色, 仅对[EasyLoadingStyle.custom]有效.</span>
+<span class="n">Color</span> <span class="n">progressColor</span><span class="o">;</span>
+
+<span class="c1">/// loading的背景色, 仅对[EasyLoadingStyle.custom]有效.</span>
+<span class="n">Color</span> <span class="n">backgroundColor</span><span class="o">;</span>
+
+<span class="c1">/// 遮罩的背景色, 仅对[EasyLoadingMaskType.custom]有效.</span>
+<span class="n">Color</span> <span class="n">maskColor</span><span class="o">;</span>
+
+<span class="c1">/// 当loading展示的时候，是否允许用户操作.</span>
+<span class="kt">bool</span> <span class="n">userInteractions</span><span class="o">;</span>
+
+<span class="c1">/// 展示成功状态的自定义组件</span>
+<span class="n">Widget</span> <span class="n">successWidget</span><span class="o">;</span>
+
+<span class="c1">/// 展示失败状态的自定义组件</span>
+<span class="n">Widget</span> <span class="n">errorWidget</span><span class="o">;</span>
+
+<span class="c1">/// 展示信息状态的自定义组件</span>
+<span class="n">Widget</span> <span class="n">infoWidget</span><span class="o">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>因为 <code class="language-plaintext highlighter-rouge">EasyLoading</code> 是一个全局单例, 所以我们可以在任意一个地方自定义它的样式:</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="n">EasyLoading</span><span class="o">.</span><span class="na">instance</span>
+  <span class="o">..</span><span class="na">displayDuration</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">Duration</span><span class="o">(</span><span class="nl">milliseconds:</span> <span class="mi">2000</span><span class="o">)</span>
+  <span class="o">..</span><span class="na">indicatorType</span> <span class="o">=</span> <span class="n">EasyLoadingIndicatorType</span><span class="o">.</span><span class="na">fadingCircle</span>
+  <span class="o">..</span><span class="na">loadingStyle</span> <span class="o">=</span> <span class="n">EasyLoadingStyle</span><span class="o">.</span><span class="na">dark</span>
+  <span class="o">..</span><span class="na">indicatorSize</span> <span class="o">=</span> <span class="mf">45.0</span>
+  <span class="o">..</span><span class="na">radius</span> <span class="o">=</span> <span class="mf">10.0</span>
+  <span class="o">..</span><span class="na">backgroundColor</span> <span class="o">=</span> <span class="n">Colors</span><span class="o">.</span><span class="na">green</span>
+  <span class="o">..</span><span class="na">indicatorColor</span> <span class="o">=</span> <span class="n">Colors</span><span class="o">.</span><span class="na">yellow</span>
+  <span class="o">..</span><span class="na">textColor</span> <span class="o">=</span> <span class="n">Colors</span><span class="o">.</span><span class="na">yellow</span>
+  <span class="o">..</span><span class="na">maskColor</span> <span class="o">=</span> <span class="n">Colors</span><span class="o">.</span><span class="na">blue</span><span class="o">.</span><span class="na">withOpacity</span><span class="o">(</span><span class="mf">0.5</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>更多的指示器动画类型可查看 <a href="https://github.com/jogboms/flutter_spinkit#-showcase">flutter_spinkit showcase</a></p>
+
+<p>可以看到，<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>的集成以及使用相当的简单，而且有丰富的自定义样式，总会有你满意的。</p>
+
+<p>接下来，我们来看看<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>的代码实现。</p>
+
+<h3 id="flutter-easyloading-的实现">Flutter EasyLoading 的实现</h3>
+
+<p>本文将通过以下两个知识点来介绍<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>的主要实现过程及思路：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Overlay</code>、<code class="language-plaintext highlighter-rouge">OverlayEntry</code>实现全局弹窗</li>
+  <li><code class="language-plaintext highlighter-rouge">CustomPaint</code>与<code class="language-plaintext highlighter-rouge">Canvas</code>实现圆形进度条绘制</li>
+</ul>
+
+<h4 id="overlayoverlayentry-实现全局弹窗">Overlay、OverlayEntry 实现全局弹窗</h4>
+
+<p>先看看官方关于<code class="language-plaintext highlighter-rouge">Overlay</code>的描述：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="c1">/// A [Stack] of entries that can be managed independently.</span>
+<span class="c1">///</span>
+<span class="c1">/// Overlays let independent child widgets "float" visual elements on top of</span>
+<span class="c1">/// other widgets by inserting them into the overlay's [Stack]. The overlay lets</span>
+<span class="c1">/// each of these widgets manage their participation in the overlay using</span>
+<span class="c1">/// [OverlayEntry] objects.</span>
+<span class="c1">///</span>
+<span class="c1">/// Although you can create an [Overlay] directly, it's most common to use the</span>
+<span class="c1">/// overlay created by the [Navigator] in a [WidgetsApp] or a [MaterialApp]. The</span>
+<span class="c1">/// navigator uses its overlay to manage the visual appearance of its routes.</span>
+<span class="c1">///</span>
+<span class="c1">/// See also:</span>
+<span class="c1">///</span>
+<span class="c1">///  * [OverlayEntry].</span>
+<span class="c1">///  * [OverlayState].</span>
+<span class="c1">///  * [WidgetsApp].</span>
+<span class="c1">///  * [MaterialApp].</span>
+<span class="kd">class</span> <span class="nc">Overlay</span> <span class="kd">extends</span> <span class="n">StatefulWidget</span> <span class="o">{}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>也就是说，<code class="language-plaintext highlighter-rouge">Overlay</code>是一个<code class="language-plaintext highlighter-rouge">Stack</code>的<code class="language-plaintext highlighter-rouge">Widget</code>，可以将<code class="language-plaintext highlighter-rouge">OverlayEntry</code>插入到<code class="language-plaintext highlighter-rouge">Overlay</code>中，使独立的<code class="language-plaintext highlighter-rouge">child</code>窗口悬浮于其他<code class="language-plaintext highlighter-rouge">Widget</code>之上。利用这个特性，我们可以用<code class="language-plaintext highlighter-rouge">Overlay</code>将 <code class="language-plaintext highlighter-rouge">MaterialApp</code>或<code class="language-plaintext highlighter-rouge">CupertinoApp</code>包裹起来，这样做的目的是为了确保 <code class="language-plaintext highlighter-rouge">loading</code> 组件能覆盖在其他组件之上，因为在<code class="language-plaintext highlighter-rouge">Flutter</code>中只会存在一个<code class="language-plaintext highlighter-rouge">MaterialApp</code>或<code class="language-plaintext highlighter-rouge">CupertinoApp</code>根节点组件。(注：这里的做法参考于<a href="https://github.com/OpenFlutter/flutter_oktoast">flutter_oktoast</a>插件，感谢)。</p>
+
+<p>另外，这样做的目的还可以解决另外一个核心问题：将 <code class="language-plaintext highlighter-rouge">context</code> 缓存到内存中，后续所有调用均不需要提供<code class="language-plaintext highlighter-rouge">context</code>。实现如下：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="nd">@override</span>
+<span class="n">Widget</span> <span class="nf">build</span><span class="p">(</span><span class="n">BuildContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">Directionality</span><span class="o">(</span>
+    <span class="nl">child:</span> <span class="n">Overlay</span><span class="o">(</span>
+      <span class="nl">initialEntries:</span> <span class="o">[</span>
+        <span class="n">OverlayEntry</span><span class="o">(</span>
+          <span class="nl">builder:</span> <span class="o">(</span><span class="n">BuildContext</span> <span class="n">_context</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 缓存 context</span>
+            <span class="n">EasyLoading</span><span class="o">.</span><span class="na">instance</span><span class="o">.</span><span class="na">context</span> <span class="o">=</span> <span class="n">_context</span><span class="o">;</span>
+            <span class="c1">// 这里的child必须是MaterialApp或CupertinoApp</span>
+            <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="na">child</span><span class="o">;</span>
+          <span class="o">},</span>
+        <span class="o">),</span>
+      <span class="o">],</span>
+    <span class="o">),</span>
+    <span class="nl">textDirection:</span> <span class="n">widget</span><span class="o">.</span><span class="na">textDirection</span><span class="o">,</span>
+  <span class="o">);</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c1">// 创建OverlayEntry</span>
+<span class="n">OverlayEntry</span> <span class="n">_overlayEntry</span> <span class="o">=</span> <span class="n">OverlayEntry</span><span class="o">(</span>
+  <span class="nl">builder:</span> <span class="o">(</span><span class="n">BuildContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">LoadingContainer</span><span class="o">(</span>
+    <span class="nl">key:</span> <span class="n">_key</span><span class="o">,</span>
+    <span class="nl">status:</span> <span class="n">status</span><span class="o">,</span>
+    <span class="nl">indicator:</span> <span class="n">w</span><span class="o">,</span>
+    <span class="nl">animation:</span> <span class="n">_animation</span><span class="o">,</span>
+  <span class="o">),</span>
+<span class="o">);</span>
+
+<span class="c1">// 将OverlayEntry插入到Overlay中</span>
+<span class="c1">// 通过Overlay.of()我们可以获取到App根节点的Overlay</span>
+<span class="n">Overlay</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">_getInstance</span><span class="o">().</span><span class="na">context</span><span class="o">).</span><span class="na">insert</span><span class="o">(</span><span class="n">_overlayEntry</span><span class="o">);</span>
+
+<span class="c1">// 调用OverlayEntry自身的remove()方法，从所在的Overlay中移除自己</span>
+<span class="n">_overlayEntry</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Overlay</code>、<code class="language-plaintext highlighter-rouge">OverlayEntry</code>的使用及理解还是很简单，我们也可以再更多的使用场景使用他们，比如说，类似<code class="language-plaintext highlighter-rouge">PopupWindow</code>的弹窗效果、全局自定义<code class="language-plaintext highlighter-rouge">Dialog</code>弹窗等等。只要灵活运用，我们可以实现很多我们想要的效果。</p>
+
+<h4 id="custompaint与canvas实现圆形进度条绘制"><code class="language-plaintext highlighter-rouge">CustomPaint</code>与<code class="language-plaintext highlighter-rouge">Canvas</code>实现圆形进度条绘制</h4>
+
+<p>几乎所有的<code class="language-plaintext highlighter-rouge">UI</code>系统都会提供一个自绘<code class="language-plaintext highlighter-rouge">UI</code>的接口，这个接口通常会提供一块<code class="language-plaintext highlighter-rouge">2D</code>画布<code class="language-plaintext highlighter-rouge">Canvas</code>，<code class="language-plaintext highlighter-rouge">Canvas</code>内部封装了一些基本绘制的<code class="language-plaintext highlighter-rouge">API</code>，我们可以通过<code class="language-plaintext highlighter-rouge">Canvas</code>绘制各种自定义图形。在<code class="language-plaintext highlighter-rouge">Flutter</code>中，提供了一个<code class="language-plaintext highlighter-rouge">CustomPaint</code>组件，它可以结合一个画笔<code class="language-plaintext highlighter-rouge">CustomPainter</code>来实现绘制自定义图形。接下来我将简单介绍下圆形进度条的实现。</p>
+
+<p>我们先来看看<code class="language-plaintext highlighter-rouge">CustomPaint</code>构造函数：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kd">const</span> <span class="nf">CustomPaint</span><span class="p">(</span><span class="o">{</span>
+  <span class="n">Key</span> <span class="n">key</span><span class="o">,</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">painter</span><span class="o">,</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">foregroundPainter</span><span class="o">,</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">size</span> <span class="o">=</span> <span class="n">Size</span><span class="o">.</span><span class="na">zero</span><span class="o">,</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">isComplex</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">willChange</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
+  <span class="n">Widget</span> <span class="n">child</span><span class="o">,</span>
+<span class="o">})</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<ul>
+  <li>painter: 背景画笔，会显示在子节点后面;</li>
+  <li>foregroundPainter: 前景画笔，会显示在子节点前面</li>
+  <li>size：当<code class="language-plaintext highlighter-rouge">child</code>为<code class="language-plaintext highlighter-rouge">null</code>时，代表默认绘制区域大小，如果有<code class="language-plaintext highlighter-rouge">child</code>则忽略此参数，画布尺寸则为<code class="language-plaintext highlighter-rouge">child</code>尺寸。如果有<code class="language-plaintext highlighter-rouge">child</code>但是想指定画布为特定大小，可以使用<code class="language-plaintext highlighter-rouge">SizeBox</code>包裹<code class="language-plaintext highlighter-rouge">CustomPaint</code>实现。</li>
+  <li>isComplex：是否复杂的绘制，如果是，<code class="language-plaintext highlighter-rouge">Flutter</code>会应用一些缓存策略来减少重复渲染的开销。</li>
+  <li>willChange：和<code class="language-plaintext highlighter-rouge">isComplex</code>配合使用，当启用缓存时，该属性代表在下一帧中绘制是否会改变。</li>
+</ul>
+
+<p>可以看到，绘制时我们需要提供前景或背景画笔，两者也可以同时提供。我们的画笔需要继承<code class="language-plaintext highlighter-rouge">CustomPainter</code>类，我们在画笔类中实现真正的绘制逻辑。</p>
+
+<p>接下来，我们看下怎么通过<code class="language-plaintext highlighter-rouge">CustomPainter</code>绘制圆形进度条：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">_CirclePainter</span> <span class="kd">extends</span> <span class="n">CustomPainter</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="n">Color</span> <span class="n">color</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="kt">double</span> <span class="n">value</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="kt">double</span> <span class="n">width</span><span class="o">;</span>
+
+  <span class="n">_CirclePainter</span><span class="o">({</span>
+    <span class="nd">@required</span> <span class="k">this</span><span class="o">.</span><span class="na">color</span><span class="o">,</span>
+    <span class="nd">@required</span> <span class="k">this</span><span class="o">.</span><span class="na">value</span><span class="o">,</span>
+    <span class="nd">@required</span> <span class="k">this</span><span class="o">.</span><span class="na">width</span><span class="o">,</span>
+  <span class="o">});</span>
+
+  <span class="nd">@override</span>
+  <span class="kt">void</span> <span class="n">paint</span><span class="o">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">paint</span> <span class="o">=</span> <span class="n">Paint</span><span class="o">()</span>
+      <span class="o">..</span><span class="na">color</span> <span class="o">=</span> <span class="n">color</span>
+      <span class="o">..</span><span class="na">strokeWidth</span> <span class="o">=</span> <span class="n">width</span>
+      <span class="o">..</span><span class="na">style</span> <span class="o">=</span> <span class="n">PaintingStyle</span><span class="o">.</span><span class="na">stroke</span>
+      <span class="o">..</span><span class="na">strokeCap</span> <span class="o">=</span> <span class="n">StrokeCap</span><span class="o">.</span><span class="na">round</span><span class="o">;</span>
+    <span class="n">canvas</span><span class="o">.</span><span class="na">drawArc</span><span class="o">(</span>
+      <span class="n">Offset</span><span class="o">.</span><span class="na">zero</span> <span class="o">&amp;</span> <span class="n">size</span><span class="o">,</span>
+      <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="na">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span>
+      <span class="n">math</span><span class="o">.</span><span class="na">pi</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">value</span><span class="o">,</span>
+      <span class="kc">false</span><span class="o">,</span>
+      <span class="n">paint</span><span class="o">,</span>
+    <span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@override</span>
+  <span class="kt">bool</span> <span class="n">shouldRepaint</span><span class="o">(</span><span class="n">_CirclePainter</span> <span class="n">oldDelegate</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">oldDelegate</span><span class="o">.</span><span class="na">value</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>从上面我们可以看到，<code class="language-plaintext highlighter-rouge">CustomPainter</code>中定义了一个虚函数<code class="language-plaintext highlighter-rouge">paint</code>:</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">paint</span><span class="p">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这个函数是绘制的核心所在，它包含了以下两个参数：</p>
+
+<ul>
+  <li>canvas: 画布，包括各种绘制方法, 如 <code class="language-plaintext highlighter-rouge">drawLine(画线)</code>、<code class="language-plaintext highlighter-rouge">drawRect(画矩形)</code>、<code class="language-plaintext highlighter-rouge">drawCircle(画圆)</code>等</li>
+  <li>size: 当前绘制区域大小</li>
+</ul>
+
+<p>画布现在有了，那么接下来我们就需要一支画笔了。<code class="language-plaintext highlighter-rouge">Flutter</code>提供了<code class="language-plaintext highlighter-rouge">Paint</code>类来实现画笔。而且可以配置画笔的各种属性如粗细、颜色、样式等，比如：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kd">final</span> <span class="n">paint</span> <span class="o">=</span> <span class="n">Paint</span><span class="o">()</span>
+  <span class="o">..</span><span class="na">color</span> <span class="o">=</span> <span class="n">color</span> <span class="c1">// 颜色</span>
+  <span class="o">..</span><span class="na">strokeWidth</span> <span class="o">=</span> <span class="n">width</span> <span class="c1">// 宽度</span>
+  <span class="o">..</span><span class="na">style</span> <span class="o">=</span> <span class="n">PaintingStyle</span><span class="o">.</span><span class="na">stroke</span>
+  <span class="o">..</span><span class="na">strokeCap</span> <span class="o">=</span> <span class="n">StrokeCap</span><span class="o">.</span><span class="na">round</span><span class="o">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>最后，我们就是需要使用<code class="language-plaintext highlighter-rouge">drawArc</code>方法进行圆弧的绘制了：</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">canvas</span><span class="o">.</span><span class="na">drawArc</span><span class="o">(</span>
+  <span class="n">Offset</span><span class="o">.</span><span class="na">zero</span> <span class="o">&amp;</span> <span class="n">size</span><span class="o">,</span>
+  <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="na">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span>
+  <span class="n">math</span><span class="o">.</span><span class="na">pi</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">value</span><span class="o">,</span>
+  <span class="kc">false</span><span class="o">,</span>
+  <span class="n">paint</span><span class="o">,</span>
+<span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>到此，我们就完成了进度条的绘制。另外我们也需要注意下绘制性能问题。好在类中提供了重写<code class="language-plaintext highlighter-rouge">shouldRepaint</code>的方法，这个方法决定了画布什么时候会重新绘制，在复杂的绘制中对提升绘制性能是相当有成效的。</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nd">@override</span>
+<span class="kt">bool</span> <span class="nf">shouldRepaint</span><span class="p">(</span><span class="n">_CirclePainter</span> <span class="n">oldDelegate</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">oldDelegate</span><span class="o">.</span><span class="na">value</span><span class="o">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="结语">结语</h2>
+
+<p>毫无疑问，<code class="language-plaintext highlighter-rouge">Flutter</code>的前景是一片光明的，也许现在还存在诸多问题，但我相信更多的人会愿意陪着<code class="language-plaintext highlighter-rouge">Flutter</code>一起成长。期待着<code class="language-plaintext highlighter-rouge">Flutter</code>的生态圈的完善。后期我也会逐步完善<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>，期待您的宝贵意见。</p>
+
+<p>最后，希望<code class="language-plaintext highlighter-rouge">Flutter EasyLoading</code>对您有所帮助。</p>
+:ET

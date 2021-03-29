@@ -1,0 +1,352 @@
+I"i`<h2 id="一引言">一、引言</h2>
+
+<h3 id="11腾讯位置服务是什么">1.1「腾讯位置服务」是什么？</h3>
+
+<blockquote>
+  <p>立足生态，连接未来</p>
+</blockquote>
+
+<p>「腾讯位置服务」平台依托庞大的数据生态，以定位、地图展示、地点搜索、路线规划、导航、室内图、海外图等位置服务能力和LBS大数据能力为基础，面向开发者提供方便、易用、高效的LBS服务产品。当前「腾讯位置服务」数据能力已覆盖10亿人的位置行为数据、日均超过600亿次的定位调用、每日支持1亿次位置检索。</p>
+
+<!--more-->
+
+<h3 id="12腾讯位置服务可应用的场景">1.2「腾讯位置服务」可应用的场景？</h3>
+
+<p>随着功能的日益完善，腾讯位置服务可适用的场景也越来越多，如<strong>物流业务</strong>、<strong>智能出行</strong>、<strong>o2o业务</strong>、<strong>共享单车</strong>、<strong>运动健康</strong>、<strong>LBS游戏服务</strong>等行业均可见「腾讯位置服务」的身影。笔者也将通过此文展示下腾讯位置服务在<strong>智能出行</strong>行业的应用与实践。</p>
+
+<h2 id="二需求背景">二、需求背景</h2>
+
+<h3 id="21-乘车二维码微信小程序">2.1 「乘车二维码」微信小程序</h3>
+
+<p>自从2017年微信上线小程序以来，小程序已经迅速成长为一个巨大的生态，吸引各行各业的开发者或服务商参与其中。小程序与线下场景的结合也日益紧密，其中，<strong>乘车二维码</strong>微信小程序无疑让人们的出行服务变的更加简单、快捷。先乘车，后扣费，无论手机是否联网，是否有信号，都可以很顺畅的进行乘车。</p>
+
+<h3 id="22-完善乘车二维码微信小程序">2.2 完善「乘车二维码」微信小程序</h3>
+
+<p>有了最基本的「乘车二维码」功能对用户体验来说，还是远远不够的，为此，从用户体验的角度出发，我们逐渐新增了一些实用的功能，比如查询附近的公交信息、用户路线规划等。也正因为新增了这些实用性的功能，我们发现「乘车二维码」微信小程序在数据表现(如日活、留存、使用时长)方面更加出色了，「腾讯位置服务」也成为我们「乘车二维码」微信小程序内不可或缺的角色。</p>
+
+<p>接下来，笔者将通过<strong>公交地图</strong>、<strong>路线规划</strong>两个功能点更加详细的介绍「腾讯位置服务」中的微信小程序 <code class="language-plaintext highlighter-rouge">JavaScript SDK</code>、<strong>微信小程序插件</strong>。</p>
+
+<h2 id="三公交地图">三、公交地图</h2>
+
+<h3 id="31-效果预览">3.1 效果预览</h3>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/2/16ec6f24ae7b3837?w=500&amp;h=1083&amp;f=png&amp;s=576905" alt="公交地图" /></p>
+
+<h3 id="32-技术点分析">3.2 技术点分析</h3>
+
+<p>在上面的效果预览图中，我们不难发现，实现公交地图功能主要包含以下技术要点：</p>
+
+<ul>
+  <li>获取用户当前位置信息</li>
+  <li>通过坐标点获取附近公交信息</li>
+  <li>地图展示、标注</li>
+</ul>
+
+<h3 id="33-技术点实现">3.3 技术点实现</h3>
+
+<h4 id="331-获取用户当前位置信息">3.3.1 获取用户当前位置信息</h4>
+
+<p>我们可以通过微信小程序官方提供的api：<a href="https://developers.weixin.qq.com/miniprogram/dev/api/location/wx.getLocation.html">wx.getLocation()</a>，来获取用户的当前位置坐标点信息</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="nx">wx</span><span class="p">.</span><span class="nx">getLocation</span><span class="p">({</span>
+ <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">gcj02</span><span class="dl">'</span><span class="p">,</span>
+ <span class="nx">success</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">latitude</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">latitude</span>
+   <span class="kd">const</span> <span class="nx">longitude</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">longitude</span>
+ <span class="p">}</span>
+<span class="p">})</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这里我们将 <code class="language-plaintext highlighter-rouge">type</code> 指定为 <code class="language-plaintext highlighter-rouge">gcj02</code> 获取到的坐标点信息可在后续接口中直接使用，相对应的，如果将 <code class="language-plaintext highlighter-rouge">type</code> 指定为 <code class="language-plaintext highlighter-rouge">wgs84</code>，后续我们需要进一步进行坐标转换。</p>
+
+<p>还有个需要注意的是，该接口需要经过用户授权同意才能调用，因此我们需要在 <code class="language-plaintext highlighter-rouge">app.json</code> 文件中新增相关配置：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c1">// app.json</span>
+<span class="dl">"</span><span class="s2">permission</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">scope.userLocation</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">desc</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">你的位置信息将用于查询公交信息</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="332-获取附近公交信息">3.3.2 获取附近公交信息</h4>
+
+<p>附近公交数据哪里来？</p>
+
+<p>这里我们便用到了微信小程序原生<code class="language-plaintext highlighter-rouge">LBS</code>能力的最佳拍档– <strong>微信小程序<code class="language-plaintext highlighter-rouge">JavaScript SDK</code></strong>。</p>
+
+<p>腾讯位置服务为微信小程序提供了基础的标点能力、线和圆的绘制接口等地图组件和位置展示、地图选点等地图API位置服务能力支持，使得开发者可以自由地实现自己的微信小程序产品。 在此基础上，腾讯位置服务<strong>微信小程序<code class="language-plaintext highlighter-rouge">JavaScript SDK</code></strong>是专为小程序开发者提供的<code class="language-plaintext highlighter-rouge">LBS</code>数据服务工具包，可以在小程序中调用腾讯位置服务的<code class="language-plaintext highlighter-rouge">POI</code>检索、关键词输入提示、地址解析、逆地址解析、行政区划和距离计算等数据服务，让您的小程序更强大！</p>
+
+<p>接下来笔者将展示如何通过<strong>微信小程序<code class="language-plaintext highlighter-rouge">JavaScript SDK</code></strong>获取附近公交的信息。</p>
+
+<ol>
+  <li>
+    <p>开通「腾讯位置服务」：在微信小程序后台依次选择<strong>开发-&gt;开发者工具-&gt;腾讯位置服务</strong>，然后点击开通按钮，按照提示为您的小程序开通「腾讯位置服务」
+<img src="https://user-gold-cdn.xitu.io/2019/12/3/16ec96413a202656?w=1540&amp;h=1112&amp;f=png&amp;s=163780" alt="开通腾讯位置服务" /></p>
+  </li>
+  <li>
+    <p>申请开发者密钥(key)：<a href="https://lbs.qq.com/dev/console/key/manage">申请密钥</a></p>
+  </li>
+  <li>
+    <p>安全域名设置：在在微信小程序后台依次选择<strong>设置-&gt;开发设置中</strong>设置<code class="language-plaintext highlighter-rouge">request</code>合法域名，添加 <code class="language-plaintext highlighter-rouge">https://apis.map.qq.com</code></p>
+  </li>
+  <li>
+    <p>下载<strong>微信小程序 <code class="language-plaintext highlighter-rouge">JavaScript SDK</code></strong>：<a href="http://3gimg.qq.com/lightmap/xcx/jssdk/qqmap-wx-jssdk1.2.zip">微信小程序JavaScriptSDK v1.2</a></p>
+  </li>
+  <li>
+    <p>小程序使用：</p>
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre> <span class="c1">// index.js</span>
+ <span class="c1">// 引入 JavaScript SDK 核心类</span>
+ <span class="kd">let</span> <span class="nx">QQMapWX</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">../../libs/qqmap-wx-jssdk.js</span><span class="dl">'</span><span class="p">);</span>
+ <span class="kd">let</span> <span class="nx">qqmapsdk</span><span class="p">;</span>
+ <span class="nx">Page</span><span class="p">({</span>
+   <span class="na">onLoad</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+     <span class="c1">// 实例化API核心类</span>
+     <span class="nx">qqmapsdk</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">QQMapWX</span><span class="p">({</span>
+       <span class="na">key</span><span class="p">:</span> <span class="dl">'</span><span class="s1">申请的key</span><span class="dl">'</span>
+     <span class="p">});</span>
+   <span class="p">},</span>
+   <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+     <span class="c1">// 调用接口</span>
+     <span class="nx">qqmapsdk</span><span class="p">.</span><span class="nx">search</span><span class="p">({</span>
+       <span class="na">keyword</span><span class="p">:</span> <span class="dl">'</span><span class="s1">公交车站</span><span class="dl">'</span><span class="p">,</span>
+       <span class="na">location</span><span class="p">:</span> <span class="dl">'</span><span class="s1">28.636767,115.855820</span><span class="dl">'</span><span class="p">,</span>
+       <span class="na">filter</span><span class="p">:</span> <span class="dl">'</span><span class="s1">category=公交站</span><span class="dl">'</span><span class="p">,</span>
+       <span class="na">success</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+       <span class="p">},</span>
+       <span class="na">fail</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+       <span class="p">},</span>
+       <span class="na">complete</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+       <span class="p">}</span>
+     <span class="p">});</span>
+   <span class="p">}</span>
+ <span class="p">})</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>返回结果：</p>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/3/16ec980ae18b2f04?w=1876&amp;h=468&amp;f=png&amp;s=322426" alt="附近公交信息" /></p>
+
+<p>可以看到，我们已经拿到了我们想要的公交数据，接下来将公交数据在地图上标注展示出来。</p>
+
+<h4 id="333-地图展示标注">3.3.3 地图展示、标注</h4>
+
+<p>公交信息的展示使用到了「腾讯位置服务」为小程序提供的 <a href="https://developers.weixin.qq.com/miniprogram/dev/component/map.html">map</a> 组件，我们需要将公交信息组装成 <code class="language-plaintext highlighter-rouge">markers</code> 从而绘制到地图组件上。</p>
+
+<p>关于地图组件的具体使用可参考官方文档：<a href="https://developers.weixin.qq.com/miniprogram/dev/component/map.html">map组件的使用</a></p>
+
+<h3 id="34-小结">3.4 小结</h3>
+
+<p>可以看到，我们通过<strong>微信小程序<code class="language-plaintext highlighter-rouge">JavaScript SDK</code></strong>可以很轻松的获取到附近的公交信息。当然，<strong>微信小程序<code class="language-plaintext highlighter-rouge">JavaScript SDK</code></strong>的能力也远远不仅于此，它还提供很多实用性的功能满足多种使用场景：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">方法</th>
+      <th style="text-align: left">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">search(options:Object)</td>
+      <td style="text-align: left">地点搜索，搜索周边poi，比如：“酒店” “餐饮” “娱乐” “学校” 等等</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">getSuggestion(options:Object)</td>
+      <td style="text-align: left">用于获取输入关键字的补完与提示，帮助用户快速输入</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">reverseGeocoder(options:Object)</td>
+      <td style="text-align: left">提供由坐标到坐标所在位置的文字描述的转换。输入坐标返回地理位置信息和附近poi列表</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">geocoder(options:Object)</td>
+      <td style="text-align: left">提供由地址描述到所述位置坐标的转换，与逆地址解析的过程正好相反</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">direction(options:Object)</td>
+      <td style="text-align: left">提供驾车，步行，骑行，公交的路线规划能力</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">getCityList()</td>
+      <td style="text-align: left">获取全国城市列表数据</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">getDistrictByCityId(options:Object)</td>
+      <td style="text-align: left">通过城市ID返回城市下的区县</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">calculateDistance(options:Object)</td>
+      <td style="text-align: left">计算一个点到多点的步行、驾车距离</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>详细使用可参考官方文档：<a href="https://lbs.qq.com/qqmap_wx_jssdk/qqmapwx.html">微信小程序JavaScript SDK 使用方法</a></p>
+
+<p><strong><em>需要注意的是，每个key的每个服务接口的调用量都有日调用量：1万次/Key、并发数：5次/key/秒的限制，如若您的微信小程序使用量超出这个限制，可通过<a href="https://lbs.qq.com/dev/console/quota/applyList">控制台-&gt;配额申请</a>中免费申请你需要的配额。</em></strong></p>
+
+<h2 id="四路线规划">四、路线规划</h2>
+
+<p><strong>如果说，「乘车二维码」微信小程序让人们的出行变得更加简单、快捷。</strong></p>
+
+<p><strong>那么，路线规划插件则为人们怎么出行提供了最优解。</strong></p>
+
+<h3 id="41-效果预览">4.1 效果预览</h3>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/3/16ec9dcdcb40c7e1?w=500&amp;h=1083&amp;f=png&amp;s=448918" alt="公交地图" /></p>
+
+<h3 id="42-路线规划插件">4.2 路线规划插件</h3>
+<blockquote>
+  <p>腾讯位置服务路线规划插件 提供路线规划等功能，根据起终点，多种出行方式智能规划最佳出行路线及详情。开发者可以将路线规划插件嵌入到自建小程序的页面里，实现路线规划功能。</p>
+</blockquote>
+
+<p>可以看到，通过使用路线规划插件，我们可以很方便的在我们「乘车二维码」微信小程序内完成路线规划功能，接入步骤也较为简单，主要分为以下几步：</p>
+
+<ol>
+  <li>
+    <p>插件申请接入：
+在微信小程序后台管理平台中，依次选择<strong>设置-&gt;第三方服务-&gt;插件管理</strong>里点击<strong>添加插件</strong>，搜索<strong>腾讯位置服务路线规划</strong>申请，审核通过后，小程序开发者可在小程序内使用该插件。
+<img src="https://user-gold-cdn.xitu.io/2019/12/3/16eca245caae6743?w=2460&amp;h=598&amp;f=png&amp;s=80189" alt="路线规划插件" /></p>
+  </li>
+  <li>引入插件包：
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre> <span class="c1">// app.json</span>
+ <span class="dl">"</span><span class="s2">plugins</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+     <span class="dl">"</span><span class="s2">routePlan</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+       <span class="dl">"</span><span class="s2">version</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1.0.5</span><span class="dl">"</span><span class="p">,</span>
+       <span class="dl">"</span><span class="s2">provider</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">wx50b5593e81dd937a</span><span class="dl">"</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>设置定位授权:
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre> <span class="c1">// app.json</span>
+ <span class="dl">"</span><span class="s2">permission</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+   <span class="dl">"</span><span class="s2">scope.userLocation</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+     <span class="dl">"</span><span class="s2">desc</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">你的位置信息将用于小程序定位</span><span class="dl">"</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>使用插件：
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre> <span class="kd">let</span> <span class="nx">key</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">申请的key</span><span class="dl">'</span><span class="p">;</span>  <span class="c1">//使用在腾讯位置服务申请的key</span>
+ <span class="kd">let</span> <span class="nx">referer</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>   <span class="c1">//调用插件的app的名称</span>
+ <span class="kd">let</span> <span class="nx">endPoint</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>  <span class="c1">//终点</span>
+   <span class="dl">'</span><span class="s1">name</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">八一广场</span><span class="dl">'</span><span class="p">,</span>
+   <span class="dl">'</span><span class="s1">latitude</span><span class="dl">'</span><span class="p">:</span> <span class="mf">28.673400</span><span class="p">,</span>
+   <span class="dl">'</span><span class="s1">longitude</span><span class="dl">'</span><span class="p">:</span> <span class="mf">115.904500</span>
+ <span class="p">});</span>
+ <span class="nx">wx</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">({</span>
+   <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">plugin://routePlan/index?key=</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">key</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&amp;referer=</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">referer</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&amp;endPoint=</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">endPoint</span>
+ <span class="p">});</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>在集成路线规划插件后，进一步丰富了我们「乘车二维码」微信小程序的使用场景，现在，用户可以在不使用地图类App的情况下进行最优路线规划，躲避拥堵，方便又快捷。</p>
+
+<p>基于「腾讯位置服务」的路线规划插件主要有以下优势：</p>
+
+<ul>
+  <li><strong>大数据加持，智能推荐多种出行方案</strong>。给出用户合理路线规划是最基本功能，而能否通过大数据及实时路况智能呈现更合适的方案，甚至比用户多想一步超出其预期，才是提升产品体验、提高用户粘度的关键。</li>
+  <li><strong>海量公交运营数据，贴心提醒用户合适路线</strong>。公共交通是出行的主要方式之一，城市里丰富的公共交通资源让我们从A点到B点有太多的选择。路线规划插件的公交方案不仅可以提供多种出行偏好如少步行、时间短、换乘少等供用户选择，而且我们还整合了大量的公交实时运营数据，包括交通管制、运营时间、线路临时更改等等，可以准确告知用户在某个出行的时间内是否有合适的车辆，避免错过公交的尴尬。</li>
+</ul>
+
+<h3 id="43-小结">4.3 小结</h3>
+
+<p>从「腾讯位置服务」官网可以看到，目前「腾讯位置服务」已经为我们提供了三款实用性功能插件：</p>
+
+<ul>
+  <li>
+    <p><strong>路线规划：</strong>根据起点、终点，智能规划最佳出行路线，并支持多种出行方式。</p>
+  </li>
+  <li>
+    <p><strong>地铁图：</strong>支持全国所有城市地铁线路静态展示、信息查询、线路检索及规划等功能。</p>
+  </li>
+  <li>
+    <p><strong>地图选点：</strong>快速、准确地选择并确认自己的当前位置，并将相关位置信息回传给开发者。</p>
+  </li>
+</ul>
+
+<p>「腾讯位置服务」基于微信提供的小程序插件能力，可以说让微信小程序一步拥有地图功能，大大的减少了我们开发的工作量、提升用户体验、增加了用户在我们「乘车二维码」微信小程序的使用场景。是我们实现地图功能的最佳伙伴。</p>
+
+<p>相信后续「腾讯位置服务」也会为我们提供更多功能的插件。</p>
+
+<p>更多有关「腾讯位置服务」小程序插件的使用可查看官方文档：<a href="https://lbs.qq.com/miniprogram_plugin/index.html">微信小程序插件</a></p>
+
+<h2 id="五结语">五、结语</h2>
+
+<p>我们在完善「乘车二维码」微信小程序的道路上从未停止过脚步，给用户提供完美的出行体验是我们的终极目标。我们也不会停止在「腾讯位置服务」上的探索，目前所使用到的能力也仅仅是冰山一角，后续我们还会继续尝试「腾讯位置服务」提供的<strong>个性化地图</strong>、<strong>地铁图</strong>等能力，力争给用户提供最完美的出行体验。</p>
+
+<p>也期待着未来在微信小程序端「腾讯位置服务」能提供更多的使用场景，让出行更简单！</p>
+:ET

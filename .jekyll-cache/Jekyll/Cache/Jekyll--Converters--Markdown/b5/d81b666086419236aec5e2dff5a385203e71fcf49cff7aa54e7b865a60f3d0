@@ -1,0 +1,478 @@
+I"�~<meta name="referrer" content="no-referrer" />
+
+<h2 id="0-前言">0. 前言</h2>
+
+<p>嗯，可能一进来大部分人都会觉得，为什么还会有人重复造轮子，GitHub第三方客户端都已经烂大街啦。确实，一开始我自己也是这么觉得的，也问过自己是否真的有意义再去做这样一个项目。思考再三，以下原因也决定了我愿意去做一个让自己满意的GitHub第三方客户端。</p>
+
+<ul>
+  <li>
+    <p>对于时常关注GitHub Trending列表的笔者来说，迫切需要一个更简单的方式随时随地去跟随GitHub最新的技术潮流；</p>
+  </li>
+  <li>
+    <p>已有的一些GitHub小程序客户端颜值与功能并不能满足笔者的要求；</p>
+  </li>
+  <li>
+    <p>听说iOS开发没人要了，掌握一门新的开发技能，又何尝不可？</p>
+  </li>
+  <li>
+    <p>其实也没那么多原因，既然想做，那就去做，开心最重要。</p>
+  </li>
+</ul>
+
+<!--more-->
+
+<h1 id="1-gitter">1. Gitter</h1>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/1/26/1688aa356ae167c9?w=258&amp;h=258&amp;f=png&amp;s=34736" alt="code" /></p>
+
+<ul>
+  <li>
+    <p>GitHub：<a href="https://github.com/huangjianke/Gitter">https://github.com/huangjianke/Gitter</a>，可能是目前颜值最高的GitHub小程序客户端，欢迎star</p>
+  </li>
+  <li>
+    <p>数据来源：<a href="https://developer.github.com/v3/">GitHub API v3</a></p>
+  </li>
+</ul>
+
+<p>目前实现的功能有：</p>
+
+<ul>
+  <li>
+    <p>实时查看Trending</p>
+  </li>
+  <li>
+    <p>显示用户列表</p>
+  </li>
+  <li>
+    <p>仓库和用户的搜索</p>
+  </li>
+  <li>
+    <p>仓库：详情展示、README.md展示、Star/Unstar、Fork、Contributors展示、查看仓库文件内容</p>
+  </li>
+  <li>
+    <p>开发者：Follow/Unfollow、显示用户的followers/following</p>
+  </li>
+  <li>
+    <p>Issue：查看issue列表、新增issue、新增issue评论</p>
+  </li>
+  <li>
+    <p>分享仓库、开发者</p>
+  </li>
+  <li>
+    <p>…</p>
+  </li>
+</ul>
+
+<p>Gitter的初衷并不是想把网页端所有功能照搬到小程序上，因为那样的体验并不会很友好，比如说，笔者自己也不想在手机上阅读代码，那将会是一件很痛苦的事。</p>
+
+<p>在保证用户体验的前提下，让用户用更简单的方式得到自己想要的，这是一件有趣的事。</p>
+
+<h1 id="2-探索篇">2. 探索篇</h1>
+
+<h2 id="技术选型">技术选型</h2>
+
+<p>第一次觉得，在茫茫前端的世界里，自己是那么渺小。</p>
+
+<p>当决定去做这个项目的时候，就开始了马不停蹄的技术选型，但摆在自己面前的选择是那么的多，也不得不感慨，前端的世界，真的很精彩。</p>
+
+<ul>
+  <li>
+    <p>原生开发：基本上一开始就放弃了，开发体验很不友好；</p>
+  </li>
+  <li>
+    <p><a href="https://tencent.github.io/wepy/">WePY</a>：之前用这个框架已经开发过一个小程序，<a href="https://github.com/huangjianke/weapp-poem">诗词墨客</a>，不得不说，坑是真多，用过的都知道；</p>
+  </li>
+  <li>
+    <p><a href="http://mpvue.com/">mpvue</a>：用Vue的方式去开发小程序，个人觉得文档并不是很齐全，加上近期维护比较少，可能是趋于稳定了？</p>
+  </li>
+  <li>
+    <p><a href="https://taro.aotu.io/">Taro</a>：用React的方式去开发小程序，Taro团队的小伙伴维护真的很勤快，也很耐心的解答大家疑问，文档也比较齐全，开发体验也很棒，还可以一键生成多端运行的代码(暂没尝试)</p>
+  </li>
+</ul>
+
+<p>货比三家，经过一段时间的尝试及踩坑，综合自己目前的能力，最终确定了Gitter的技术选型：</p>
+
+<p><a href="https://taro.aotu.io/">Taro</a> + <a href="https://taro-ui.aotu.io/#/docs/introduction">Taro UI</a> + Redux + 云开发 Node.js</p>
+
+<h2 id="页面设计">页面设计</h2>
+
+<p>其实，作为一名Coder，曾经一直想找个UI设计师妹子做老婆的(肯定有和我一样想法的Coder)，多搭配啊。现在想想，code不是生活的全部，现在的我一样很幸福。</p>
+
+<p>话回正题，没有设计师老婆页面设计怎么办？毕竟笔者想要的是一款高颜值的GitHub小程序。</p>
+
+<p>嗯，不慌，默默的拿出了笔者沉寂已久的Photoshop和Sketch。不敢说自己的设计能力如何，Gitter的设计至少是能让笔者自己心情愉悦的，倘若哪位设计爱好者想对Gitter的设计进行改良，欢迎欢迎，十二分的欢迎！</p>
+
+<h1 id="3-开发篇">3. 开发篇</h1>
+
+<blockquote>
+  <p>Talk is cheap. Show me the code.</p>
+</blockquote>
+
+<p>作为一篇技术性文章，怎可能少得了代码。</p>
+
+<p>在这里主要写写几个踩坑点，作为一个前端小白，相信各位读者均是笔者的前辈，还望多多指教！</p>
+
+<h2 id="trending">Trending</h2>
+
+<p>进入开发阶段没多久，就遇到了第一个坑。<strong>GitHub居然没有提供Trending列表的API！！！</strong></p>
+
+<p>也没有过多的去想GitHub为什么不提供这个API，只想着怎么去尽快填好这个坑。一开始尝试使用<a href="https://scrapy.org/">Scrapy</a>写一个爬虫对网页端的Trending列表信息进行定时爬取及存储供小程序端使用，但最终还是放弃了这个做法，因为笔者并没有服务器与已经备案好的域名，小程序的云开发也只支持Node.js的部署。</p>
+
+<p>开源的力量还是强大，最终找到了<a href="https://github.com/huchenme/github-trending-api">github-trending-api</a>，稍作修改，成功部署到小程序云开发后台，在此，感谢原作者的努力。</p>
+
+<ul>
+  <li>Trending列表云函数</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td> --><td class="rouge-code"><pre><span class="c1">// 云函数入口函数</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">main</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">since</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span>
+  <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="kd">let</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
+  <span class="kd">const</span> <span class="nx">cacheKey</span> <span class="o">=</span> <span class="s2">`repositories::</span><span class="p">${</span><span class="nx">language</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">nolang</span><span class="dl">'</span><span class="p">}</span><span class="s2">::</span><span class="p">${</span><span class="nx">since</span> <span class="o">||</span>
+  <span class="dl">'</span><span class="s1">daily</span><span class="dl">'</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">cacheData</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="dl">'</span><span class="s1">repositories</span><span class="dl">'</span><span class="p">).</span><span class="nx">where</span><span class="p">({</span>
+    <span class="na">cacheKey</span><span class="p">:</span> <span class="nx">cacheKey</span>
+  <span class="p">}).</span><span class="nx">orderBy</span><span class="p">(</span><span class="dl">'</span><span class="s1">cacheDate</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">desc</span><span class="dl">'</span><span class="p">).</span><span class="kd">get</span><span class="p">()</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">cacheData</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="p">((</span><span class="nx">date</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="nx">cacheData</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">cacheDate</span><span class="p">)</span>  <span class="o">&lt;</span> <span class="mi">1800</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">cacheData</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">content</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetchRepositories</span><span class="p">({</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">since</span> <span class="p">});</span>
+    <span class="k">await</span> <span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="dl">'</span><span class="s1">repositories</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span>
+      <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">cacheDate</span><span class="p">:</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getTime</span><span class="p">(),</span>
+        <span class="na">cacheKey</span><span class="p">:</span> <span class="nx">cacheKey</span><span class="p">,</span>
+        <span class="na">content</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">data</span><span class="p">:</span> <span class="nx">res</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="markdown解析">Markdown解析</h2>
+
+<p>嗯，这是一个大坑。</p>
+
+<p>在做技术调研的时候，发现小程序端Markdown解析主要有以下方案：</p>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/icindy/wxParse">wxParse</a>：作者最后一次提交已是两年前了，经过自己的尝试，也确实发现已经不适合如README.md的解析</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/TooBug/wemark">wemark</a>：一款很优秀的微信小程序Markdown渲染库，但经过笔者尝试之后，发现对README.md的解析并不完美</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/sbfkcel/towxml">towxml</a>：目前发现是微信小程序最完美的Markdown渲染库，已经能近乎完美的对README.md进行解析并展示</p>
+  </li>
+</ul>
+
+<p>在Markdown解析这一块，最终采用的也是towxml，但发现在解析性能这一块，目前并不是很优秀，对一些比较大的数据解析也超出了小程序所能承受的范围，还好贴心的作者(<a href="https://github.com/sbfkcel">sbfkcel</a>)提供了服务端的支持，在此感谢作者的努力！</p>
+
+<ul>
+  <li>Markdown解析云函数</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td> --><td class="rouge-code"><pre><span class="kd">const</span> <span class="nx">Towxml</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">towxml</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">towxml</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Towxml</span><span class="p">();</span>
+<span class="c1">// 云函数入口函数</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">main</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">content</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span>
+  <span class="kd">let</span> <span class="nx">res</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">func</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">parse</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">markdown</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">towxml</span><span class="p">.</span><span class="nx">toJson</span><span class="p">(</span><span class="nx">content</span> <span class="o">||</span> <span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">markdown</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">towxml</span><span class="p">.</span><span class="nx">toJson</span><span class="p">(</span><span class="nx">content</span> <span class="o">||</span> <span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">html</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">data</span><span class="p">:</span> <span class="nx">res</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>markdown.js组件</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td> --><td class="rouge-code"><pre><span class="c1">// 云函数解析markdown</span>
+<span class="nx">parseReadme</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">md</span><span class="p">,</span> <span class="nx">base</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span>
+  <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span>
+  <span class="nx">wx</span><span class="p">.</span><span class="nx">cloud</span><span class="p">.</span><span class="nx">callFunction</span><span class="p">({</span>
+    <span class="c1">// 要调用的云函数名称</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">parse</span><span class="dl">'</span><span class="p">,</span>
+    <span class="c1">// 传递给云函数的event参数</span>
+    <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">func</span><span class="p">:</span> <span class="dl">'</span><span class="s1">parse</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">markdown</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">content</span><span class="p">:</span> <span class="nx">md</span><span class="p">,</span>
+    <span class="p">}</span>
+  <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">data</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">base</span> <span class="o">&amp;&amp;</span> <span class="nx">base</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">data</span> <span class="o">=</span> <span class="nx">render</span><span class="p">.</span><span class="nx">initData</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="p">{</span><span class="na">base</span><span class="p">:</span> <span class="nx">base</span><span class="p">,</span> <span class="na">app</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">$scope</span><span class="p">})</span>
+    <span class="p">}</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+      <span class="na">fail</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">data</span><span class="p">:</span> <span class="nx">data</span>
+    <span class="p">})</span>
+  <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">cloud</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+      <span class="na">fail</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td> --><td class="rouge-code"><pre><span class="c1">// Markdown渲染</span>
+<span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">data</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">View</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+      <span class="nx">data</span> <span class="p">?</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">View</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="k">import</span> <span class="nx">src</span><span class="o">=</span><span class="dl">'</span><span class="s1">../towxml/entry.wxml</span><span class="dl">'</span> <span class="o">/&gt;</span>
+          <span class="o">&lt;</span><span class="nx">template</span> <span class="nx">is</span><span class="o">=</span><span class="dl">'</span><span class="s1">entry</span><span class="dl">'</span> <span class="nx">data</span><span class="o">=</span><span class="dl">''</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="sr">/View</span><span class="err">&gt;
+</span>      <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">View</span> <span class="nx">className</span><span class="o">=</span><span class="dl">'</span><span class="s1">loading</span><span class="dl">'</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">AtActivityIndicator</span> <span class="nx">size</span><span class="o">=</span><span class="p">{</span><span class="mi">20</span><span class="p">}</span> <span class="nx">color</span><span class="o">=</span><span class="dl">'</span><span class="s1">#2d8cf0</span><span class="dl">'</span> <span class="nx">content</span><span class="o">=</span><span class="dl">'</span><span class="s1">loading...</span><span class="dl">'</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="sr">/View</span><span class="err">&gt;
+</span>      <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="o">&lt;</span><span class="sr">/View</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="redux">Redux</h2>
+
+<p>其实，笔者在该项目中，对Redux的使用并不多。一开始，笔者觉得所有的接口请求都应该通过Redux操作，后面才发现，并不是所有的操作都必须使用Redux，最后，在本项目中，只有获取个人信息的时候使用了Redux。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td> --><td class="rouge-code"><pre><span class="c1">// 获取个人信息</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">getUserInfo</span> <span class="o">=</span> <span class="nx">createApiAction</span><span class="p">(</span><span class="nx">USERINFO</span><span class="p">,</span> <span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">api</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user</span><span class="dl">'</span><span class="p">,</span> <span class="nx">params</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td> --><td class="rouge-code"><pre><span class="c1">// action</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">createApiAction</span><span class="p">(</span><span class="nx">actionType</span><span class="p">,</span> <span class="nx">func</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{})</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="nx">params</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="p">{</span> <span class="na">success</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{},</span> <span class="na">failed</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{}</span> <span class="p">},</span>
+    <span class="nx">customActionType</span> <span class="o">=</span> <span class="nx">actionType</span><span class="p">,</span>
+  <span class="p">)</span> <span class="o">=&gt;</span> <span class="k">async</span> <span class="p">(</span><span class="nx">dispatch</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="nx">dispatch</span><span class="p">({</span> <span class="na">type</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">customActionType</span>  <span class="p">}</span><span class="s2">_request`</span><span class="p">,</span> <span class="nx">params</span> <span class="p">});</span>
+      <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">func</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+      <span class="nx">dispatch</span><span class="p">({</span> <span class="na">type</span><span class="p">:</span> <span class="nx">customActionType</span><span class="p">,</span> <span class="nx">params</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">data</span> <span class="p">});</span>
+
+      <span class="nx">callback</span><span class="p">.</span><span class="nx">success</span> <span class="o">&amp;&amp;</span> <span class="nx">callback</span><span class="p">.</span><span class="nx">success</span><span class="p">({</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">data</span> <span class="p">})</span>
+      <span class="k">return</span> <span class="nx">data</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">dispatch</span><span class="p">({</span> <span class="na">type</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">customActionType</span>  <span class="p">}</span><span class="s2">_failure`</span><span class="p">,</span> <span class="nx">params</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">e</span> <span class="p">})</span>
+
+      <span class="nx">callback</span><span class="p">.</span><span class="nx">failed</span> <span class="o">&amp;&amp;</span> <span class="nx">callback</span><span class="p">.</span><span class="nx">failed</span><span class="p">({</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">e</span> <span class="p">})</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td> --><td class="rouge-code"><pre><span class="nx">getUserInfo</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">hasLogin</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">userAction</span><span class="p">.</span><span class="nx">getUserInfo</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span><span class="o">=&gt;</span><span class="p">{</span>
+      <span class="nx">Taro</span><span class="p">.</span><span class="nx">hideLoading</span><span class="p">()</span>
+      <span class="nx">Taro</span><span class="p">.</span><span class="nx">stopPullDownRefresh</span><span class="p">()</span>
+    <span class="p">})</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">Taro</span><span class="p">.</span><span class="nx">hideLoading</span><span class="p">()</span>
+    <span class="nx">Taro</span><span class="p">.</span><span class="nx">stopPullDownRefresh</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">const</span> <span class="nx">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">ownProps</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">userInfo</span><span class="p">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">userInfo</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">connect</span><span class="p">(</span><span class="nx">mapStateToProps</span><span class="p">)(</span><span class="nx">Index</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td> --><td class="rouge-code"><pre><span class="c1">// reducers</span>
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">user</span> <span class="p">(</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">INITIAL_STATE</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">USERINFO</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="p">...</span><span class="nx">state</span><span class="p">,</span>
+        <span class="na">userInfo</span><span class="p">:</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">.</span><span class="nx">data</span>
+      <span class="p">}</span>
+    <span class="nl">default</span><span class="p">:</span>
+      <span class="k">return</span> <span class="nx">state</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>目前，笔者对Redux还是处于一知半解的状态，嗯，学习的路还很长。</p>
+
+<blockquote>
+  <p>有需要的同学可以前往开源仓库查看相应的完整源码，还请多多指教。</p>
+</blockquote>
+
+<h1 id="4-结语篇">4. 结语篇</h1>
+
+<p>当Gitter第一个版本通过审核的时候，心情是很激动的，就像自己的孩子一样，看着他一点一点的长大，笔者也很享受这样一个项目从无到有的过程，在此，对那些帮助过笔者的人一并表示感谢。</p>
+
+<p>当然，目前功能和体验上可能有些不大完善，也希望大家能提供一些宝贵的意见，Gitter走向完美的路上希望有你！</p>
+
+<p>最后，希望Gitter小程序能对你有所帮助！</p>
+:ET
