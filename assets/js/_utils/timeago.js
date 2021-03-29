@@ -1,24 +1,23 @@
 /*
- * Caculate the Timeago
- * v2.0
- * https://github.com/cotes2020/jekyll-theme-chirpy
- * © 2019 Cotes Chung
- * MIT Licensed
+ * Calculate the Timeago
  */
 
 $(function() {
 
-  var toRefresh = $(".timeago").length;
+  const timeagoElem = $(".timeago");
 
-  var intervalId = void 0;
+  let toRefresh = timeagoElem.length;
 
-  function timeago(iso, isLastmod) {
+  let intervalId = void 0;
+
+  function timeago(iso, prepData) {
     let now = new Date();
     let past = new Date(iso);
+    let prep = (typeof prepData !== "undefined" ? `${prepData} ` : "");
 
     if (past.getFullYear() !== now.getFullYear()) {
       toRefresh -= 1;
-      return past.toLocaleString("zh-CN", {
+      return prep + past.toLocaleString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric"
@@ -27,7 +26,7 @@ $(function() {
 
     if (past.getMonth() !== now.getMonth()) {
       toRefresh -= 1;
-      return past.toLocaleString("zh-CN", {
+      return prep + past.toLocaleString("en-US", {
         month: "short",
         day: "numeric"
       });
@@ -38,30 +37,28 @@ $(function() {
     let day = Math.floor(seconds / 86400);
     if (day >= 1) {
       toRefresh -= 1;
-      return day + " 天前";
+      return day + " day" + (day > 1 ? "s" : "") + " ago";
     }
 
     let hour = Math.floor(seconds / 3600);
     if (hour >= 1) {
-      return hour + " 小时前";
+      return hour + " hour" + (hour > 1 ? "s" : "") + " ago";
     }
 
     let minute = Math.floor(seconds / 60);
     if (minute >= 1) {
-      return minute + " 分钟前";
+      return minute + " minute" + (minute > 1 ? "s" : "") + " ago";
     }
 
-    return "刚刚发布";
+    return (isLastmod ? "just" : "Just") + " now";
   }
 
   function updateTimeago() {
     $(".timeago").each(function() {
       if ($(this).children("i").length > 0) {
-        var basic = $(this).text();
-        var isLastmod = $(this).hasClass("lastmod");
-        var node = $(this).children("i");
-        var date = node.text(); /* ISO Date: "YYYY-MM-DDTHH:MM:SSZ" */
-        $(this).text(timeago(date, isLastmod));
+        let node = $(this).children("i");
+        let date = node.text(); /* ISO Date: "YYYY-MM-DDTHH:MM:SSZ" */
+        $(this).text(timeago(date, $(this).attr("prep")));
         $(this).append(node);
       }
     });
