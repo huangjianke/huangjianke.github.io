@@ -1,4 +1,4 @@
-name: Greetings
+name: Deploy
 
 on:
   push:
