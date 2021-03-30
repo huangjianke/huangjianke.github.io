@@ -3,5 +3,5 @@
 tooltip: "%a, %b %e, %Y, %l:%M %p %z"
 
 post:
-  long: "%b %e, %Y"
-  short: "%b %e"
+  long: "%Y年%m月%d日"
+  short: "%m月%d日"

@@ -16,4 +16,4 @@ search_hint: 搜索   # text show on search bar
 
 pin_prompt: 置顶    # pinned prompt
 
-read_time_unit: min   # see posts' time to read
+read_time_unit: 分钟   # see posts' time to read

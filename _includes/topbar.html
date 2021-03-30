@@ -10,7 +10,7 @@
 
     {% if paths.size == 0 %}
       <!-- index page -->
-      <span>{{ 'Posts' }}</span>
+      <span>{{ '文章' }}</span>
     {% else %}
 
       {% for item in paths %}
@@ -18,7 +18,7 @@
         {% if forloop.first %}
           {% unless page.layout == 'post' %}
           <span>
-            <a href="{{ '/' | relative_url }}">{{ 'Home' }}</a>
+            <a href="{{ '/' | relative_url }}">{{ '首页' }}</a>
           </span>
           {% endunless %}
 
@@ -31,9 +31,24 @@
           {% if item == 'posts' and page.layout == 'post' %}
             {% assign url = '/' %}
           {% endif %}
+
+          {% if item == 'categories' %}
+          <a href="{{ url | relative_url }}">
+            {{ '分类' }}
+          </a>
+          {% elsif item == 'tags' %}
+          <a href="{{ url | relative_url }}">
+            {{ '标签' }}
+          </a>
+          {% elsif item == 'posts' %}
+          <a href="{{ url | relative_url }}">
+            {{ '文章' }}
+          </a>
+          {% else %}
           <a href="{{ url | relative_url }}">
             {{ item | capitalize }}
           </a>
+          {% endif %}
         </span>
 
         {% endif %}
