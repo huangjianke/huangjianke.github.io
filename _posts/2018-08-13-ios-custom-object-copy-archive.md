@@ -17,7 +17,6 @@ copy需要自定义类继承NSCopying协议
 #import <objc/runtime.h>
 
 - (id)copyWithZone:(NSZone *)zone {
-    
     id obj = [[[self class] allocWithZone:zone] init];
     Class class = [self class];
     while (class != [NSObject class]) {
@@ -32,7 +31,6 @@ copy需要自定义类继承NSCopying协议
             [obj setValue:value forKey:strName];
         }
         free(ivar);
-        
         class = class_getSuperclass(class);//记住还要遍历父类的属性呢
     }
     return obj;
@@ -49,7 +47,6 @@ copy需要自定义类继承NSCopying协议
 
 #pragma mark - 归档、解档
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    
     Class class = [self class];
     while (class != [NSObject class]) {
         unsigned int count;
@@ -63,7 +60,6 @@ copy需要自定义类继承NSCopying协议
             [encoder encodeObject:value forKey:strName];
         }
         free(ivar);
-        
         class = class_getSuperclass(class);//记住还要遍历父类的属性呢
     }
 }
@@ -73,7 +69,6 @@ copy需要自定义类继承NSCopying协议
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self) {
-        
         Class class = [self class];
         while (class != [NSObject class]) {
             unsigned int count = 0;
@@ -89,7 +84,6 @@ copy需要自定义类继承NSCopying协议
                 [self setValue:value forKey:strName];
             }
             free(ivar);
-            
             class = class_getSuperclass(class);//记住还要遍历父类的属性呢
         }
     }
