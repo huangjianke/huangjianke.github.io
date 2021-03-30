@@ -13,9 +13,9 @@ copy需要自定义类继承NSCopying协议
 
 <!--more-->
 
-`#import <objc/runtime.h>`
+```objc
+#import <objc/runtime.h>
 
-```
 - (id)copyWithZone:(NSZone *)zone {
     
     id obj = [[[self class] allocWithZone:zone] init];
@@ -43,9 +43,10 @@ copy需要自定义类继承NSCopying协议
 
 归档解档需要自定义类继承NSCoding协议
 
-`#import <objc/runtime.h>`
 
-```
+```objc
+#import <objc/runtime.h>
+
 #pragma mark - 归档、解档
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
@@ -68,7 +69,7 @@ copy需要自定义类继承NSCopying协议
 }
 ```
 
-```
+```objc
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self) {
