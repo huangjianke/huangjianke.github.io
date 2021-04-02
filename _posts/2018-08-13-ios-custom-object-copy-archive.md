@@ -1,9 +1,8 @@
 ---
 title: iOS自定义对象及子类及模型套模型的拷贝、归档存储的通用代码
-date: 2018-08-13 12:14:41
+date: 2018-08-13 12:00:00 +0800
 tags: [iOS]
-categories: iOS
-urlname: ios_custom_object_copy_archive
+categories: [代码人生, iOS]
 ---
 
 ### runtime实现通用copy

@@ -1,6 +1,6 @@
 ---
 title: Git仓库迁移保留提交记录
-date: 2018-07-22 00:01:31
+date: 2018-07-22 12:00:00 +0800
 tags: [Git, 杂谈]
 categories: Git
 ---

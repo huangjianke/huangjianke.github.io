@@ -1,8 +1,8 @@
 ---
 title: Flutter EasyLoading - 让全局Toast/Loading更简单
-date: 2020-02-19 14:53:44
+date: 2020-02-19 12:00:00 +0800
 tags: [Flutter, iOS, Android]
-categories: Flutter
+categories: [代码人生, Flutter]
 ---
 
 > ✨**flutter_easyloading**: 一个简单易用的**Flutter**插件，包含23种loading动画效果、进度条展示、Toast展示。纯Flutter端实现，支持iOS、Android。

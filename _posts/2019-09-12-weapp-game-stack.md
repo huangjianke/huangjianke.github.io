@@ -1,8 +1,8 @@
 ---
 title: 烧脑！JS+Canvas带你体验「偶消奇不消」的智商挑战
-date: 2019-09-12 15:45:44
+date: 2019-09-12 12:00:00 +0800
 tags: [微信小游戏, JavaScript, Canvas]
-categories: 微信小游戏
+categories: [代码人生, 小程序]
 ---
 
 <meta name="referrer" content="no-referrer"/>

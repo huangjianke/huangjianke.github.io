@@ -1,8 +1,8 @@
 ---
 title: Swift设计模式
-date: 2020-04-01
+date: 2020-04-01 12:00:00 +0800
 tags: [Swift, iOS, 设计模式]
-categories: 设计模式
+categories: [代码人生, 设计模式]
 ---
 
 ## 创建型模式
