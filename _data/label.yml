@@ -9,11 +9,11 @@ post:
   relate_posts: 推荐阅读
   share: 分享
   button:
-    next: 较新文章
-    previous: 较老文章
+    next: 下一篇
+    previous: 上一篇
 
-search_hint: 搜索   # text show on search bar
+search_hint: 搜索 # text show on search bar
 
-pin_prompt: 置顶    # pinned prompt
+pin_prompt: 置顶 # pinned prompt
 
-read_time_unit: 分钟   # see posts' time to read
+read_time_unit: 分钟 # see posts' time to read
