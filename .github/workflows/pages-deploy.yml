@@ -6,6 +6,9 @@ on:
     branches:
       - master
 
+env:
+  TZ: Asia/Shanghai
+
 jobs:
   jekyll:
     runs-on: ubuntu-16.04
