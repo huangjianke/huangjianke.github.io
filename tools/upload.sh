@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bundle exec jekyll build --incremental
+JEKYLL_ENV=production bundle exec jekyll build
 git add .
 git commit -m "update"
 git push -u origin master
