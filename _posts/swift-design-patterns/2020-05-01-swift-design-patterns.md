@@ -6,6 +6,10 @@ categories: [代码人生, 设计模式]
 pin: true
 ---
 
+数据结构与算法教你写出高效的代码，设计模式教你写出高质量的代码
+
+<!-- more -->
+
 ## 创建型模式
 
 - **[工厂方法模式](/posts/swift-design-patterns-factory-method/)**：在父类中提供一个创建对象的方法，允许子类决定实例化对象的类型。
