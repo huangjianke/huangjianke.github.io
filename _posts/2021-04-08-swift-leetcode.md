@@ -7,8 +7,33 @@ pin: true
 ---
 
 | 序号 | 标题 | 难度 | 时间复杂度 | 空间复杂度 | 题解 |
-|:---:|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---|:---:|:---:|:---:|:---:|
+| 1 | [两数之和](https://leetcode-cn.com/problems/two-sum/) | 简单  | O(n) | O(1) | [Swift](#0001) |
 | 26 | [删除有序数组中的重复项](https://leetcode.com/problems/remove-duplicates-from-sorted-array) | 简单  | O(n) | O(1) | [Swift](#0026) |
+
+<a name="0001" />
+
+## 两数之和
+
+```swift
+/**
+ * 主要思路: 
+ * 遍历数组，并且使用 map 存储 target - nums[i] 的值
+ * 
+ * 时间复杂度: O(n), 空间复杂度: O(n)
+ */
+class Solution {
+    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        var dict = [Int: Int]()
+        for (i, num) in nums.enumerated() {
+            if let lastIndex = dict[target - num] {
+                return [lastIndex, i]
+            }
+            dict[num] = i
+        }
+        fatalError("No valid outputs")
+    }
+```
 
 <a name="0026" />
 
@@ -21,7 +46,6 @@ pin: true
  * 
  * 时间复杂度: O(n), 空间复杂度: O(1)
  */
-
 class Solution {
     func removeDuplicates(_ nums: inout [Int]) -> Int {
         guard nums.count > 0 else {
