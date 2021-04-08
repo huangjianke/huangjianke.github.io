@@ -6,26 +6,21 @@ categories: [代码人生, LeetCode]
 pin: true
 ---
 
-| 序号 | 标题 | 难度 | 时间复杂度 | 空间复杂度 |
-|:---:|:---:|:---:|:---:|:---:|
-| 26 | [删除有序数组中的重复项](#0026) | 简单  | O(n) | O(1) |
-
-<a name="0026" />
+| 序号 | 标题 | 难度 | 时间复杂度 | 空间复杂度 | 题解 |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| 26 | [删除有序数组中的重复项](https://leetcode.com/problems/remove-duplicates-from-sorted-array) | 简单  | O(n) | O(1) | [Swift](#0026) |
 
 ## 删除有序数组中的重复项
-
-题目链接: [https://leetcode.com/problems/remove-duplicates-from-sorted-array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
-
-### 解题思路
-
-定义一个索引index, 遍历数组过程中与该索引的值进行对比，如果不一致，则修改对应索引的值
-
-### 代码实现
+<a name="0026" />
 
 ```swift
 /**
+ * 主要思路: 
+ * 定义一个索引index, 遍历数组过程中与该索引的值进行对比，如果不一致，则修改对应索引的值
+ * 
  * 时间复杂度: O(n), 空间复杂度: O(1)
  */
+
 class Solution {
     func removeDuplicates(_ nums: inout [Int]) -> Int {
         guard nums.count > 0 else {
