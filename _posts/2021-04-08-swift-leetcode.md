@@ -10,8 +10,9 @@ pin: true
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | 26 | [删除有序数组中的重复项](https://leetcode.com/problems/remove-duplicates-from-sorted-array) | 简单  | O(n) | O(1) | [Swift](#0026) |
 
-## 删除有序数组中的重复项
 <a name="0026" />
+
+## 删除有序数组中的重复项
 
 ```swift
 /**
