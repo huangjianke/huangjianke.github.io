@@ -6,9 +6,11 @@ categories: [代码人生, LeetCode]
 pin: true
 ---
 
+[LeetCode](https://leetcode-cn.com) 刷题笔记，持续更新ing...
+
 | 序号 | 标题 | 难度 | 时间复杂度 | 空间复杂度 | 题解 |
 |:---:|:---|:---:|:---:|:---:|:---:|
-| 1 | [两数之和](https://leetcode-cn.com/problems/two-sum/) | 简单  | O(n) | O(1) | [Swift](#0001) |
+| 1 | [两数之和](https://leetcode-cn.com/problems/two-sum/) | 简单  | O(n) | O(n) | [Swift](#0001) |
 | 26 | [删除有序数组中的重复项](https://leetcode.com/problems/remove-duplicates-from-sorted-array) | 简单  | O(n) | O(1) | [Swift](#0026) |
 
 <a name="0001" />
