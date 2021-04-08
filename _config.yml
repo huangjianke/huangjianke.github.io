@@ -106,6 +106,8 @@ kramdown:
 # Or you think you're smart enough to change other relevant URLs within this template.
 permalink: /posts/:title/
 
+excerpt_separator: "<!-- more -->"
+
 collections:
   tabs:
     output: true
