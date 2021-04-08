@@ -3,6 +3,7 @@ title: Swift设计模式概览
 date: 2020-05-01 12:00:00 +0800
 tags: [Swift, iOS, 设计模式]
 categories: [代码人生, 设计模式]
+pin: true
 ---
 
 ## 创建型模式
